@@ -56,9 +56,13 @@ void my_putarray(char **);
 
 void my_putchar(char);
 
+void my_putchar_err(char);
+
 void my_put_nbr(int);
 
 int my_putstr(char const *);
+
+int my_putstr_err(char const *);
 
 char *my_revstr(char *);
 
