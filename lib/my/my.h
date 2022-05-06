@@ -128,6 +128,8 @@ int my_strlen(const char *);
 
 // 
 
+int my_bswap(int);
+
 void my_swap(int *, int *);
 
 char *my_file_in_str(const char *);

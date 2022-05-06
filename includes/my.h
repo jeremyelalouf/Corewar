@@ -7,14 +7,14 @@
 
 #ifndef MY_H_
     #define MY_H_
-    #define ATOD(x) (x - '@')
-    #define ADTOD(x) (x - '0')
-    #define DTOA(x) (x + '0')
+    #define ATOD(x)     (x - '@')
+    #define DTOA(x)     (x + '0')
+    #define ADTOD(x)    (x - '0')
     #define EXIT_ERR    84
-    #define ERR         -1
-    #define SUCC        0
-    #define TRUE        1
     #define FALSE       0
+    #define TRUE        1
+    #define SUCC        0
+    #define ERR         -1
 
 // Print functions:
 
@@ -90,7 +90,7 @@ void my_memcpy(void *, const void *, int);
 
 void *my_realloc(void *, int, int, int);
 
-void *my_reallocarray(void *, int, int);
+void *my_reallocarray(void *, int, int, int);
 
 // Tokenise and stwa functions:
 
@@ -127,6 +127,8 @@ int len_cmp(char *, char *);
 int my_strlen(const char *);
 
 // 
+
+int my_bswap(int);
 
 void my_swap(int *, int *);
 

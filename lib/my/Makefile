@@ -10,6 +10,7 @@ LIB			=		$(addsuffix .c,			\
 					my_char_in_str			\
 					my_char_islower			\
 					my_char_isnum			\
+					my_bswap				\
 					my_char_isprintable		\
 					my_file_in_str			\
 					my_compute_power_rec	\
