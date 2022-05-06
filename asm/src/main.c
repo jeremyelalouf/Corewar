@@ -27,19 +27,6 @@ int bswap(int value)
 
 int compile(char *av[])
 {
-    int fd = open("test.cor", O_CREAT | O_RDWR, 0666);
-    header_t test = {
-        .prog_name = "Tyron",
-        .magic = COREWAR_EXEC_MAGIC,
-        .prog_size = 2214,
-        .comment = "Just a basic pompes, traction program"
-    };
-
-    if (fd == -1)
-        return ERR;
-    test.magic = bswap(test.magic);
-    test.prog_size = bswap(test.prog_size);
-    write(fd, &test, sizeof(test));
     return SUCC;
 }
 
