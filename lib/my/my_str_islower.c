@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int my_str_islower(char const *str)
+int my_str_islower(const char *str)
 {
     int i = 0;
 

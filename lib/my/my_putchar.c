@@ -7,7 +7,7 @@
 
 #include <unistd.h>
 
-void my_putchar_err(char c)
+void my_putcherr(char c)
 {
     write(2, &c, 1);
 }

@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int my_str_isupper(char const *str)
+int my_str_isupper(const char *str)
 {
     int i = 0;
 

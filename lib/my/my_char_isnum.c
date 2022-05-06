@@ -7,9 +7,9 @@
 
 #include "my.h"
 
-int my_char_isnum(char a)
+int my_char_isnum(const char c)
 {
-    if (a > 57 || a < 48)
+    if (c > 57 || c < 48)
         return SUCC;
     else
         return TRUE;

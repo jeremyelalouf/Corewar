@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-char *my_file_in_str(char const *filepath)
+char *my_file_in_str(const char *filepath)
 {
     int fd = open(filepath, O_RDONLY);
     struct stat stats;

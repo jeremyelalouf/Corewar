@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int my_str_isprintable(char const *str)
+int my_str_isprintable(const char *str)
 {
     int i = 0;
 

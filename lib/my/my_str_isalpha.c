@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int my_str_isalpha(char const *str)
+int my_str_isalpha(const char *str)
 {
     int a = 0;
 

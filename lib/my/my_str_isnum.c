@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int my_str_isnum(char const *str)
+int my_str_isnum(const char *str)
 {
     int a = 0;
 

@@ -20,7 +20,7 @@ into file_name.cor,\nan executable in the Virtual Machine.\n");
 int error_handling(int ac, char *av[])
 {
     if (ac < 2) {
-        my_putstr_err("Please give a *.s file as a parameter.\n");
+        my_putsterr("Please give a *.s file as a parameter.\n");
         return ERR;
     }
     if (my_strcmp(av[1], "-h") == 0)

@@ -16,96 +16,120 @@
     #define TRUE        1
     #define FALSE       0
 
-int my_char_isalpha(const char);
-
-int my_char_in_str(const char *, const char);
-
-int my_charislower(const char);
-
-int my_char_isnum(char);
-
-char *my_strtok(char *, const char *);
-
-int my_char_isprintable(char const);
-
-int my_compute_power_rec(int, int);
-
-int my_compute_square_root(int);
-
-char **my_tab_copy(char *[]);
-
-int my_find_prime_sup(int);
-
-void my_free_array(char **);
-
-int my_getnbr(char *);
-
-char *my_gets(char *, int);
-
-int my_is_prime(int);
+// Print functions:
 
 int my_isneg(int);
 
-int len_cmp(char *, char *);
-
-char **my_malloc_tab(int);
-
-void *my_memset(void *, int, int);
-
-void my_putarray(char **);
+void my_put_nbr(int);
 
 void my_putchar(char);
 
-void my_putchar_err(char);
+void my_putcherr(char);
 
-void my_put_nbr(int);
+void my_putarray(char **);
 
-int my_putstr(char const *);
+void my_putstr(const char *);
 
-int my_putstr_err(char const *);
+void my_putsterr(const char *);
 
-char *my_revstr(char *);
+// Character check functions;
 
-int my_str_isalpha(char const *);
+int my_char_isnum(const char);
 
-int my_str_islower(char const *);
+int my_char_islower(const char);
 
-int my_str_isnum(char const *);
+int my_char_isalpha(const char);
 
-int my_str_isprintable(char const *);
+int my_char_isprintable(const char);
 
-int my_str_isupper(char const *);
+int my_char_in_str(const char *, const char);
 
-char *my_strcapitalize(char *);
+// String check functions:
 
-char *my_strcat(char *, char const *);
+int my_str_isnum(const char *);
+
+int my_str_isalpha(const char *);
+
+int my_str_islower(const char *);
+
+int my_str_isupper(const char *);
+
+int my_str_isprintable(const char *);
 
 int my_strcmp(const char *, const char *);
 
-char * my_strcpy(char *, char const *);
+int my_strncmp(const char *, const char *, int);
 
-char *my_strdup(char const *);
+// String manipulation functions:
 
-int my_strlen(char const *);
-
-char *my_strlowcase(char *);
-
-char *my_strncat(char *, char const *, int);
-
-int my_strncmp(char const *, char const *, int);
-
-char *my_strncpy(char *, char const *, int);
+char *my_revstr(char *);
 
 char *my_strupcase(char *);
 
-void *my_realloc(void *, int, int);
+char *my_strlowcase(char *);
+
+char *my_strdup(const char *);
+
+char *my_strcapitalize(char *);
+
+char *my_strcat(char *, const char *);
+
+char * my_strcpy(char *, const char *);
+
+char *my_strncpy(char *, const char *, int);
+
+char *my_strncat(char *, const char *, int);
+
+// Memory manipulations functions:
+
+void my_memset(char *, int, int);
+
+void my_memcpy(void *, const void *, int);
+
+//  Allocation functions:
+
+void *my_realloc(void *, int, int, int);
+
+void *my_reallocarray(void *, int, int);
+
+// Tokenise and stwa functions:
+
+char *my_strtok(char *, const char *);
 
 char **my_str_to_word_array(char *, const char *);
 
-void my_swap(int *, int *);
+// Calcul functions:
+
+int my_is_prime(int);
+
+int my_find_prime_sup(int);
+
+int my_compute_square_root(int);
+
+int my_compute_power_rec(int, int);
+
+// String array manipulation functions:
+
+char **my_malloc_tab(int);
+
+void my_free_array(char **);
+
+char **my_tab_copy(char *[]);
+
+// Find len and manipulate it functions:
+
+int my_getnbr(char *);
 
 int my_tablen(char *[]);
 
-char *my_file_in_str(char const *);
+int len_cmp(char *, char *);
+
+int my_strlen(const char *);
+
+// 
+
+void my_swap(int *, int *);
+
+char *my_file_in_str(const char *);
 
 #endif /* MY_H_ */

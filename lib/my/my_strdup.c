@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include "my.h"
 
-char *my_strdup(char const *src)
+char *my_strdup(const char *src)
 {
     char *dest = malloc(sizeof(char) * (my_strlen(src) + 1));
 

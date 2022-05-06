@@ -16,10 +16,12 @@ LIB			=		$(addsuffix .c,			\
 					my_compute_square_root	\
 					my_copy_tab				\
 					my_find_prime_sup		\
+					my_memcpy				\
+					my_reallocarray			\
+					my_realloc				\
 					my_strtok				\
 					my_free_array			\
 					my_getnbr				\
-					my_gets					\
 					my_is_prime				\
 					my_isneg				\
 					my_len_cmp				\

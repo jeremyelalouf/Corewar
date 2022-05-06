@@ -10,5 +10,7 @@
 
 int main(int argc, char *argv[])
 {
+    if (error_handling(argc, argv) == ERR)
+        return EXIT_ERR;
     return SUCC;
 }

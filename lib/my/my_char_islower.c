@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int my_charislower(const char character)
+int my_char_islower(const char character)
 {
     if (character >= 97 && character <= 122)
         return TRUE;

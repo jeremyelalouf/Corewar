@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include "my.h"
 
-int my_strncmp(char const *s1, char const *s2, int n)
+int my_strncmp(const char *s1, const char *s2, int n)
 {
     if (s1 == s2)
         return SUCC;

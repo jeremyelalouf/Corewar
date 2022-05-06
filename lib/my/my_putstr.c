@@ -7,20 +7,18 @@
 
 #include "my.h"
 
-int my_putstr_err(char const *str)
+void my_putsterr(const char *str)
 {
-    while (*str != '\0') {
-        my_putchar_err(*str);
+    while (*str != '\0'){
+        my_putcherr(*str);
         str++;
     }
-    return SUCC;
 }
 
-int my_putstr(char const *str)
+void my_putstr(const char *str)
 {
     while (*str != '\0'){
         my_putchar(*str);
         str++;
     }
-    return SUCC;
 }
