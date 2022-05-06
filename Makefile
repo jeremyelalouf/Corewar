@@ -28,8 +28,8 @@ fclean: clean
 	$(MAKE) fclean -C $(COREWAR_PATH)
 
 re:	
-	$(MAKE) re -C $(ASM_PATH)
-	$(MAKE) re -C $(COREWAR_PATH)
+	$(MAKE) fclean
+	$(MAKE) all
 
 $(TEST_NAME):
 	$(MAKE) test -C $(ASM_PATH)
