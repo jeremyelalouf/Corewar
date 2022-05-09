@@ -17,7 +17,7 @@ into file_name.cor,\nan executable in the Virtual Machine.\n");
     exit(SUCC);
 }
 
-int error_handling(int ac, char *av[])
+int error_handling(int ac, const char *av[])
 {
     if (ac < 2) {
         my_putsterr("Please give a *.s file as a parameter.\n");

@@ -58,6 +58,8 @@ int my_str_isprintable(const char *);
 
 int my_strcmp(const char *, const char *);
 
+char *my_strstr(char const *, char const *);
+
 int my_strncmp(const char *, const char *, int);
 
 // String manipulation functions:
@@ -80,9 +82,11 @@ char *my_strncpy(char *, const char *, int);
 
 char *my_strncat(char *, const char *, int);
 
+char *my_strrchr(const char *string, int c);
+
 // Memory manipulations functions:
 
-void my_memset(char *, int, int);
+void my_memset(void *s, int c, int n);
 
 void my_memcpy(void *, const void *, int);
 
