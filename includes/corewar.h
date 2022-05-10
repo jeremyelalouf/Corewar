@@ -11,9 +11,16 @@
     #include <stdio.h>
     #include "op.h"
 
+union arg {
+    uint32_t direct;
+    uint16_t indirect;
+    uint8_t reg;
+};
+
 typedef struct instruction_s {
     uint8_t instruction;
     uint8_t coding_byte;
+    union arg params[MAX_ARGS_NUMBER];
 } instruction_t;
 
 typedef int check_instruction_t (char *line, int fd);
