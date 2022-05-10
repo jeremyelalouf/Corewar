@@ -25,6 +25,36 @@ typedef struct instruction_tab_s {
 
 check_instruction_t check_live;
 
+check_instruction_t check_ld;
+
+check_instruction_t check_st;
+
+check_instruction_t check_add;
+
+check_instruction_t check_sub;
+
+check_instruction_t check_and;
+
+check_instruction_t check_or;
+
+check_instruction_t check_xor;
+
+check_instruction_t check_zjmp;
+
+check_instruction_t check_ldi;
+
+check_instruction_t check_sti;
+
+check_instruction_t check_fork;
+
+check_instruction_t check_lld;
+
+check_instruction_t check_lldi;
+
+check_instruction_t check_lfork;
+
+check_instruction_t check_aff;
+
 int error_handling(int ac, const char *av[]);
 
 char *get_new_file_name(char *av);
