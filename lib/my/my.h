@@ -10,6 +10,7 @@
     #define ATOD(x)     (x - '@')
     #define DTOA(x)     (x + '0')
     #define ADTOD(x)    (x - '0')
+    #define UNUSED         __attribute__((unused))
     #define EXIT_ERR    84
     #define FALSE       0
     #define TRUE        1
@@ -94,7 +95,7 @@ void my_memcpy(void *, const void *, int);
 
 void *my_realloc(void *, int, int, int);
 
-void *my_reallocarray(void *, int, int, int);
+void *my_reallocarray(void *ptr, int nmemb, int size, int last_nmemb);
 
 // Tokenise and stwa functions:
 

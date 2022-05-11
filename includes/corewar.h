@@ -23,12 +23,26 @@ typedef struct instruction_s {
     union arg params[MAX_ARGS_NUMBER];
 } instruction_t;
 
-typedef int check_instruction_t (char *line, int fd);
+typedef struct label_s {
+    int *pos;
+    char **name;
+    int *call;
+    int label_nbr;
+    int call_nbr;
+} label_t;
 
-typedef struct instruction_tab_s {
+typedef struct toolbox_s {
+    instruction_t *instructions;
+    label_t labels;
+    int line_read;
+} toolbox_t;
+
+typedef int check_instruction_t (char **instructions, int fd);
+
+typedef struct check_tab_s {
     char *instruction;
     check_instruction_t *function;
-} instruction_tab_t;
+} check_tab_t;
 
 check_instruction_t check_live;
 
