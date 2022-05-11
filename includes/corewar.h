@@ -10,6 +10,7 @@
     #include <stdint.h>
     #include <stdio.h>
     #include "op.h"
+    #define ERR_UNSIGNED 0
 
 union arg {
     uint32_t direct;
