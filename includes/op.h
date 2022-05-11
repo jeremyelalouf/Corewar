@@ -42,36 +42,25 @@ typedef struct op_s {
    char *comment;
 } op_t;
 
-/*
-** size (in bytes)
-*/
-#define IND_SIZE        2
-#define DIR_SIZE        4
-#define REG_SIZE        DIR_SIZE
+   #define IND_SIZE        2
+   #define DIR_SIZE        4
+   #define REG_SIZE        DIR_SIZE
 
-/*
-** op_tab
-*/
 extern  op_t    op_tab[];
 
-/*
-** header
-*/
-#define PROG_NAME_LENGTH        128
-#define COMMENT_LENGTH          2048
+   #define PROG_NAME_LENGTH        128
+   #define COMMENT_LENGTH          2048
 
 typedef struct header_s {
    int  magic;
-#define COREWAR_EXEC_MAGIC      0xea83f3        /* why not */
+   #define COREWAR_EXEC_MAGIC      0xea83f3        /* why not */
    char prog_name[PROG_NAME_LENGTH + 1];
    int  prog_size;
    char comment[COMMENT_LENGTH + 1];
 } header_t;
-/*
-** live
-*/
-#define CYCLE_TO_DIE    1536    /* number of cycle before beig declared dead */
-#define CYCLE_DELTA     5
-#define NBR_LIVE        40
+
+   #define CYCLE_TO_DIE    1536    /* number of cycle before beig declared dead */
+   #define CYCLE_DELTA     5
+   #define NBR_LIVE        40
 
 #endif
