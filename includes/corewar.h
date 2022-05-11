@@ -10,7 +10,13 @@
     #include <stdint.h>
     #include <stdio.h>
     #include "op.h"
-    #define ERR_UNSIGNED 0
+    #define ERR_UNSIGNED        0
+    #define NBR_OF_INSTRUCTION 16
+
+typedef struct instruction_w_index {
+    uint8_t instruction;
+    int have_index;
+} instruction_w_index_t;
 
 union arg {
     uint32_t direct;

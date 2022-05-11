@@ -7,8 +7,9 @@
 
 #ifndef CODING_BYTE_H_
     #define CODING_BYTE_H_
-    #define VAL_IND 3
     #include <stdint.h>
+    #define VAL_IND       3
+    #define REG_BYTE_SIZE 1
 
 uint8_t create_coding_byte(int instruction, char **param);
 
