@@ -17,11 +17,6 @@
 #include "op.h"
 #include "virtual_machine.h"
 
-header_t init_header_struct(void)
-{
-    return;
-}
-
 int decriptage(char const *filepath, u_int8_t *arene)
 {
     int fd = open(filepath, O_RDONLY);
@@ -49,6 +44,9 @@ int game(char const *filepath)
     memset(arene, 0, MEM_SIZE - 1);
     if (decriptage(filepath, arene) == -1)
         return -1;
+    // int fd2 = open("test", O_RDWR | O_CREAT, 0666);
+    // write(fd2, arene, little);
+    // close(fd2);
     free(arene);
     return 0;
 }
@@ -58,6 +56,6 @@ int main(int ac, char const *av[])
     if (error_handling(ac, av) == -1)
         return 84;
     if (game(av[1]) == -1)
-        return -1;
+        return 84;
     return 0;
 }
