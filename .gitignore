@@ -1,3 +1,4 @@
+libmy.a
 .vscode
 *.o
 *~
@@ -5,3 +6,5 @@
 *.cor
 assets
 corewar_binaries
+corewar
+asm
