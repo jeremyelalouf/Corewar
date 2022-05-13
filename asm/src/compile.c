@@ -12,13 +12,14 @@
 #include "my.h"
 #include "corewar.h"
 
-static int fill_compiled_file(int compile_filed_fd, const char *filepath)
+static int fill_compiled_file(int compile_filed_fd, const char *filepath,
+    struct pars_counter *pars_i)
 {
     FILE *old_file_fd = fopen(filepath, "r");
 
     if (old_file_fd == NULL)
         return ERR;
-    if (write_header(compile_filed_fd, old_file_fd) == ERR)
+    if (write_header(compile_filed_fd, old_file_fd, pars_i) == ERR)
         return ERR;
     if (write_champions(compile_filed_fd, old_file_fd) == ERR)
         return ERR;
@@ -27,7 +28,10 @@ static int fill_compiled_file(int compile_filed_fd, const char *filepath)
 
 int compile(char *av[])
 {
-    char *compiled_name = get_new_file_name(av[1]);
+    struct pars_counter pars_i = {
+        .line = 0,
+    };
+    char *compiled_name = get_new_file_name(av[1], &pars_i);
     int fd = 0;
 
     if (compiled_name == NULL)
@@ -35,7 +39,7 @@ int compile(char *av[])
     fd = open(compiled_name, O_CREAT | O_RDWR, 0666);
     if (fd == -1)
         return ERR;
-    if (fill_compiled_file(fd, av[1]) == ERR)
+    if (fill_compiled_file(fd, av[1], &pars_i) == ERR)
         return ERR;
     close(fd);
     return SUCC;

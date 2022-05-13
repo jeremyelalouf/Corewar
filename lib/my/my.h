@@ -23,6 +23,8 @@ int my_isneg(int);
 
 void my_put_nbr(int);
 
+void my_put_nberr(int);
+
 void my_putchar(char);
 
 void my_putcherr(char);

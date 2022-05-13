@@ -54,7 +54,7 @@ static int is_instruction_reg_or_index(int k, int *size,
 }
 
 static int is_instruction_with_index(int *size, uint8_t type_param,
-    instruction_t *instruction)
+    struct instruction *instruction)
 {
     for (int k = 0; k < NBR_OF_INSTRUCTION; ++k) {
         if (instruction->instruction == TAB_INSTRUCTION[k].instruction) {
@@ -64,12 +64,12 @@ static int is_instruction_with_index(int *size, uint8_t type_param,
     return (FALSE);
 }
 
-int find_total_instruction_size(instruction_t *instruction)
+int get_size_from_coding_byte(struct instruction *instruction)
 {
     int i = 0;
     int j = 0;
     int size = 0;
-    uint8_t type_param;
+    uint8_t type_param = 0;
 
     if (instruction->coding_byte == ERR_UNSIGNED)
         return ERR;
