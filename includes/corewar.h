@@ -79,6 +79,8 @@ int compile(char *av[]);
 
 uint8_t create_coding_byte(int instruction, char **param);
 
+int is_size_param_valid(int type, char *param);
+
 int find_total_instruction_size(instruction_t *instruction);
 
 int write_champions(int compile_filed_fd, FILE *old_file_fd);
