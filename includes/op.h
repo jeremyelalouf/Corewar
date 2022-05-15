@@ -45,8 +45,6 @@ typedef struct op_s {
 /*
 ** op_tab
 */
-extern  op_t    op_tab[];
-
 /*
 ** header
 */
@@ -68,7 +66,7 @@ typedef struct header_s {
    #define CYCLE_DELTA     5
    #define NBR_LIVE        40
 
-op_t op_tab[] = {
+static const op_t op_tab[] = {
     {"live", 1, {T_DIR}, 1, 10, "alive"},
     {"ld", 2, {T_DIR | T_IND, T_REG}, 2, 5, "load"},
     {"st", 2, {T_REG, T_IND | T_REG}, 3, 5, "store"},

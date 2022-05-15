@@ -10,6 +10,15 @@
     #include <stdint.h>
     #include <stdio.h>
     #include "op.h"
+    #define ERR_UNSIGNED        0
+    #define NBR_OF_INSTRUCTION 16
+    #define MAX_FOUR_BYTES_VAL "2147483647"
+    #define MAX_TWO_BYTES_VAL  "32767"
+
+typedef struct instruction_w_index {
+    uint8_t instruction;
+    int have_index;
+} instruction_w_index_t;
 
 union arg {
     uint32_t direct;
@@ -67,6 +76,12 @@ int error_handling(int ac, const char *av[]);
 char *get_new_file_name(char *av);
 
 int compile(char *av[]);
+
+uint8_t create_coding_byte(int instruction, char **param);
+
+int is_size_param_valid(int type, char *param);
+
+int find_total_instruction_size(instruction_t *instruction);
 
 int write_champions(int compile_filed_fd, FILE *old_file_fd);
 

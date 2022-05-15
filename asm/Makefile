@@ -13,7 +13,9 @@ SRC			=	$(addsuffix .c,				\
 				handle_header				\
 				handle_champions			\
 				compile						\
-				error_handling))			\
+				error_handling				\
+				get_size_write_params		\
+				coding_byte))				\
 
 SRC_TEST	=	$(addsuffix .c,				\
 				$(addprefix tests/,			\
