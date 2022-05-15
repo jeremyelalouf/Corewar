@@ -11,8 +11,8 @@
 
 static int is_register_valid(char *reg)
 {
-    if (my_strlen(reg) == 3 && my_str_isnum(&reg[1]) == TRUE &&
-        my_getnbr(&reg[1]) > 0 && my_getnbr(&reg[1]) <= 16)
+    if (my_strlen(reg) == 3 && my_getnbr(&reg[1]) > 0 &&
+        my_getnbr(&reg[1]) <= REG_NUMBER)
         return (TRUE);
     return (FALSE);
 }
@@ -23,11 +23,18 @@ static uint8_t get_param_type(char *param)
         if (is_register_valid(param) == TRUE)
             return (T_REG);
         return (ERR_UNSIGNED);
-    } else if (param[0] == '%') {
-        return (T_DIR);
-    } else {
-        return (T_IND);
     }
+    if (param[0] == '%') {
+        if (param[1] == LABEL_CHAR)
+            return (T_DIR);
+        if (is_size_valid(T_DIR, param) == TRUE)
+            return (T_DIR);
+        return (ERR_UNSIGNED);
+    }
+    if (param[0] == LABEL_CHAR)
+        return (T_IND);
+    if (is_size_valid(T_IND, param) == TRUE)
+        return (T_IND);
 }
 
 static int is_parameter_valid(int param_nb, int instruction,

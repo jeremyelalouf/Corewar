@@ -12,6 +12,8 @@
     #include "op.h"
     #define ERR_UNSIGNED        0
     #define NBR_OF_INSTRUCTION 16
+    #define MAX_FOUR_BYTES_VAL "2147483647"
+    #define MAX_TWO_BYTES_VAL  "32767"
 
 typedef struct instruction_w_index {
     uint8_t instruction;
