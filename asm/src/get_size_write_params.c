@@ -76,7 +76,7 @@ int find_total_instruction_size(instruction_t *instruction)
     while (op_tab[i].code != instruction->instruction)
         ++i;
     while (j < op_tab[i].nbr_args) {
-        type_param |= ((instruction->coding_byte << 2 * j) >> 6);
+        type_param = ((instruction->coding_byte << 2 * j & 0xff) >> 6);
         if (is_instruction_with_index(&size, type_param, instruction)
             == TRUE) {
             ++j;

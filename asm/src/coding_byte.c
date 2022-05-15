@@ -11,8 +11,8 @@
 
 static int is_register_valid(char *reg)
 {
-    if (my_strlen(reg) == 3 && my_getnbr(&reg[1]) > 0 &&
-        my_getnbr(&reg[1]) <= REG_NUMBER)
+    if (my_strlen(reg) < 4 && my_str_isnum(&reg[1]) &&
+        my_getnbr(&reg[1]) > 0 && my_getnbr(&reg[1]) <= REG_NUMBER)
         return (TRUE);
     return (FALSE);
 }
@@ -38,7 +38,7 @@ static uint8_t get_param_type(char *param)
 }
 
 static int is_parameter_valid(int param_nb, int instruction,
-                            uint8_t *value_param)
+    uint8_t *value_param)
 {
     int i = 0;
 
