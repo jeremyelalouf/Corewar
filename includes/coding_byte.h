@@ -11,6 +11,4 @@
     #define VAL_IND       3
     #define REG_BYTE_SIZE 1
 
-uint8_t create_coding_byte(int instruction, char **param);
-
 #endif /* !CODING_BYTE_H_ */

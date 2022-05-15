@@ -39,8 +39,8 @@ static int get_size_type(uint8_t type_param)
     }
 }
 
-static int is_instruction_reg_or_index(int k, int *j, int *size,
-                                    uint8_t type_param)
+static int is_instruction_reg_or_index(int k, int *size,
+    uint8_t type_param)
 {
     if (TAB_INSTRUCTION[k].have_index == TRUE) {
         if (type_param != T_REG)
@@ -53,29 +53,31 @@ static int is_instruction_reg_or_index(int k, int *j, int *size,
     }
 }
 
-static int is_instruction_with_index(int *j, int *size, uint8_t type_param,
-                                    instruction_t *instruction)
+static int is_instruction_with_index(int *size, uint8_t type_param,
+    instruction_t *instruction)
 {
     for (int k = 0; k < NBR_OF_INSTRUCTION; ++k) {
         if (instruction->instruction == TAB_INSTRUCTION[k].instruction) {
-            return (is_instruction_reg_or_index(k, j, size, type_param));
+            return (is_instruction_reg_or_index(k, size, type_param));
         }
     }
     return (FALSE);
 }
 
-int find_size_of_coding_byte(instruction_t *instruction)
+int find_total_instruction_size(instruction_t *instruction)
 {
     int i = 0;
     int j = 0;
     int size = 0;
     uint8_t type_param;
 
+    if (instruction->coding_byte == ERR_UNSIGNED)
+        return ERR;
     while (op_tab[i].code != instruction->instruction)
         ++i;
     while (j < op_tab[i].nbr_args) {
-        type_param != ((instruction->coding_byte << 2 * j) >> 6);
-        if (is_instruction_with_index(&j, &size, type_param, instruction)
+        type_param |= ((instruction->coding_byte << 2 * j) >> 6);
+        if (is_instruction_with_index(&size, type_param, instruction)
             == TRUE) {
             ++j;
             continue;

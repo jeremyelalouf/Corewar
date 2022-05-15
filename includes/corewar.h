@@ -77,6 +77,10 @@ char *get_new_file_name(char *av);
 
 int compile(char *av[]);
 
+uint8_t create_coding_byte(int instruction, char **param);
+
+int find_total_instruction_size(instruction_t *instruction);
+
 int write_champions(int compile_filed_fd, FILE *old_file_fd);
 
 int write_header(int compile_filed_fd, FILE *old_file_fd);
