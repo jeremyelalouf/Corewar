@@ -25,7 +25,8 @@ SRC			=	$(addsuffix .c,					\
 				print_error						\
 				error_handling					\
 				error_value_params				\
-				compile))						\
+				compile							\
+				write_instruction))				\
 
 SRC_TEST	=	$(addsuffix .c,					\
 				$(addprefix tests/,				\

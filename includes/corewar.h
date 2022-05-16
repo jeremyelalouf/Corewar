@@ -52,6 +52,11 @@ struct pars_counter {
     int line;
 };
 
+typedef struct write_function {
+    uint8_t size;
+    void (*fun_ptr) (int, union type *);
+} write_function_t;
+
 int error_handling(int ac, const char *av[]);
 
 char *get_new_file_name(const char *av, struct pars_counter *pars_i);
@@ -76,5 +81,11 @@ int write_champions(int compile_filed_fd, FILE *old_file_fd);
 
 int write_header(int compile_filed_fd, FILE *old_file_fd,
     struct pars_counter *pars_i);
+
+void write_indirect(int fd, union type *params);
+
+void write_direct(int fd, union type *params);
+
+void write_register(int fd, union type *params);
 
 #endif /* !PROJECT_H_ */
