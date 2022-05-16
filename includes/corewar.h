@@ -88,4 +88,6 @@ void write_direct(int fd, union type *params);
 
 void write_register(int fd, union type *params);
 
+int write_instruction(int fd, struct instruction *instruction);
+
 #endif /* !PROJECT_H_ */

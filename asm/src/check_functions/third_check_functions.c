@@ -15,6 +15,7 @@ int check_sti(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
