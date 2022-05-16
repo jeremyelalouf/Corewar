@@ -73,7 +73,7 @@ int write_header(int compile_filed_fd, FILE *old_file_fd,
 {
     char *line = NULL;
     size_t size = 0;
-    header_t header;
+    header_t header = {0};
 
     if (getline(&line, &size, old_file_fd) == ERR)
         return ERR;
