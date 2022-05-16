@@ -5,27 +5,36 @@
 ## makefile
 ##
 
-MAIN		=	./src/main.c				\
+MAIN		=	./src/main.c					\
 
-SRC			=	$(addsuffix .c,				\
-				$(addprefix src/,			\
-				get_new_file_name			\
-				handle_header				\
-				handle_champions			\
-				compile						\
-				error_handling				\
-				get_size_write_params		\
-				coding_byte))				\
+SRC			=	$(addsuffix .c,					\
+				$(addprefix src/,				\
+				$(addprefix check_functions/,	\
+				first_check_functions			\
+				second_check_functions			\
+				third_check_functions			\
+				fourth_check_functions)			\
+				$(addprefix handling_byte/,		\
+				get_size_write_params			\
+				coding_byte)					\
+				$(addprefix handling_file/,		\
+				get_new_file_name				\
+				handle_champions				\
+				handle_header)					\
+				print_error						\
+				error_handling					\
+				error_value_params				\
+				compile))						\
 
-SRC_TEST	=	$(addsuffix .c,				\
-				$(addprefix tests/,			\
-				test-project))				\
+SRC_TEST	=	$(addsuffix .c,					\
+				$(addprefix tests/,				\
+				test-project))					\
 
 OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
 OBJ_TEST	=	$(SRC:.c=.o) $(SRC_TEST:.c=.o)
 
-CFLAGS		+=	-Wall -Wextra
+CFLAGS		=	-Wall -Wextra
 
 CPPFLAGS 	+=	-I../includes
 

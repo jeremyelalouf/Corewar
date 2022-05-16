@@ -10,81 +10,74 @@
     #include <stdint.h>
     #include <stdio.h>
     #include "op.h"
-    #define ERR_UNSIGNED        0
-    #define NBR_OF_INSTRUCTION 16
     #define MAX_FOUR_BYTES_VAL "2147483647"
     #define MAX_TWO_BYTES_VAL  "32767"
+    #define NBR_OF_INSTRUCTION 16
+    #define ERR_UNSIGNED        0
+    #define VAL_IND       3
+    #define REG_BYTE_SIZE 1
 
 typedef struct instruction_w_index {
     uint8_t instruction;
     int have_index;
 } instruction_w_index_t;
 
-union arg {
+union type {
     uint32_t direct;
     uint16_t indirect;
     uint8_t reg;
 };
 
-typedef struct instruction_s {
+struct arg {
+    uint16_t size;
+    union type types;
+};
+
+struct instruction {
     uint8_t instruction;
     uint8_t coding_byte;
-    union arg params[MAX_ARGS_NUMBER];
-} instruction_t;
+    struct arg params[MAX_ARGS_NUMBER];
+};
 
-typedef int check_instruction_t (char *line, int fd);
+typedef struct label_s {
+    int *pos;
+    char **name;
+    int *call;
+    int label_nbr;
+    int call_nbr;
+} label_t;
 
-typedef struct instruction_tab_s {
-    char *instruction;
-    check_instruction_t *function;
-} instruction_tab_t;
+struct toolbox {
+    struct instruction *instructions;
+    label_t labels;
+};
 
-check_instruction_t check_live;
-
-check_instruction_t check_ld;
-
-check_instruction_t check_st;
-
-check_instruction_t check_add;
-
-check_instruction_t check_sub;
-
-check_instruction_t check_and;
-
-check_instruction_t check_or;
-
-check_instruction_t check_xor;
-
-check_instruction_t check_zjmp;
-
-check_instruction_t check_ldi;
-
-check_instruction_t check_sti;
-
-check_instruction_t check_fork;
-
-check_instruction_t check_lld;
-
-check_instruction_t check_lldi;
-
-check_instruction_t check_lfork;
-
-check_instruction_t check_aff;
+struct pars_counter {
+    char *prog_name;
+    int line;
+};
 
 int error_handling(int ac, const char *av[]);
 
-char *get_new_file_name(char *av);
+char *get_new_file_name(const char *av, struct pars_counter *pars_i);
 
 int compile(char *av[]);
+
+void print_invalid(struct pars_counter *pars_i);
+
+void print_syntax(struct pars_counter *pars_i);
+
+void print_no_name(struct pars_counter *pars_i);
 
 uint8_t create_coding_byte(int instruction, char **param);
 
 int is_size_param_valid(int type, char *param);
 
-int find_total_instruction_size(instruction_t *instruction);
+int get_size_from_coding_byte(struct instruction *instruction);
 
 int write_champions(int compile_filed_fd, FILE *old_file_fd);
 
-int write_header(int compile_filed_fd, FILE *old_file_fd);
+int write_header(int compile_filed_fd, FILE *old_file_fd,
+    struct pars_counter *pars_i);
 
 #endif /* !PROJECT_H_ */

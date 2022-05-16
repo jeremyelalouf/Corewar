@@ -6,30 +6,51 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 
 #include "my.h"
 #include "corewar.h"
+#include "check_functions.h"
 
-// static const instruction_tab_t INSTRUCTION_TAB[] = {
-//     { "live", &check_live },
-//     { "ld", &check_ld },
-//     { "st", &check_st },
-//     { "add", &check_add },
-//     { "sub", &check_sub },
-//     { "and", &check_and },
-//     { "or", &check_or },
-//     { "xor", &check_xor },
-//     { "zjmp", &check_zjmp },
-//     { "ldi", &check_ldi },
-//     { "sti", &check_sti },
-//     { "fork", &check_fork },
-//     { "lld", &check_lld },
-//     { "lldi", &check_lldi },
-//     { "lfork", &check_lfork },
-//     { "aff", &check_aff },
-// };
+static int call_check_function(
+    int compile_filed_fd,
+    char *command,
+    struct instruction *instruction)
+{
+    char **array = my_str_to_word_array(command, " ,\t\n");
+
+    if (array == NULL)
+        return ERR;
+    if (my_char_in_str(array[0], LABEL_CHAR) == TRUE)
+        array += 1;
+    for (int i = 0; i != sizeof(INSTRUCTION_TAB) / sizeof(*INSTRUCTION_TAB);
+        ++i) {
+        if (my_strcmp(array[0], INSTRUCTION_TAB[i].instruction) == 0)
+            INSTRUCTION_TAB[i].function(instruction, array, compile_filed_fd);
+    }
+    return SUCC;
+}
 
 int write_champions(int compile_filed_fd, FILE *old_file_fd)
 {
-   return SUCC;
+    char *line = NULL;
+    size_t size = 0;
+    int i = 0;
+    struct toolbox toolbox = {
+        .labels.label_nbr = 0,
+        .labels.call_nbr = 0,
+    };
+
+    while (getline(&line, &size, old_file_fd) != -1) {
+        if (my_strlen(line) < 2)
+            continue;
+        toolbox.instructions = realloc(toolbox.instructions,
+            (i + 1) * sizeof(struct toolbox));
+        if (toolbox.instructions == NULL)
+            return ERR;
+        call_check_function(compile_filed_fd, line,
+            &toolbox.instructions[i]);
+        ++i;
+    }
+    return SUCC;
 }

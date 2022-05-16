@@ -5,7 +5,8 @@
 ** coding byte
 */
 
-#include "coding_byte.h"
+#include <stdint.h>
+
 #include "corewar.h"
 #include "my.h"
 
@@ -27,14 +28,15 @@ static uint8_t get_param_type(char *param)
     if (param[0] == '%') {
         if (param[1] == LABEL_CHAR)
             return (T_DIR);
-        if (is_size_valid(T_DIR, param) == TRUE)
+        if (is_size_param_valid(T_DIR, param) == TRUE)
             return (T_DIR);
         return (ERR_UNSIGNED);
     }
     if (param[0] == LABEL_CHAR)
         return (T_IND);
-    if (is_size_valid(T_IND, param) == TRUE)
+    if (is_size_param_valid(T_IND, param) == TRUE)
         return (T_IND);
+    return ERR_UNSIGNED;
 }
 
 static int is_parameter_valid(int param_nb, int instruction,

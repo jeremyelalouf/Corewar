@@ -8,31 +8,68 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 #include "my.h"
 #include "op.h"
 #include "corewar.h"
 
-static int handle_to_fill_header(header_t *header, char *line, char *to_fill)
+static int header_error_handling(char *command, char **array, char *line,
+    struct pars_counter *pars_i)
+{
+    if (my_tablen(array) != 2) {
+        if (my_strcmp(command, NAME_CMD_STRING) == 0 ||
+        my_strcmp(command, COMMENT_CMD_STRING) == 0) {
+            my_char_in_str(line, '"') == TRUE ?
+                print_syntax(pars_i) :
+                print_no_name(pars_i);
+        } else
+            print_invalid(pars_i);
+        free(command);
+        return ERR;
+    }
+    return SUCC;
+}
+
+static int fill_header(char *command, char *arg, header_t *header,
+    struct pars_counter *pars_i)
+{
+    if (my_strcmp(command, NAME_CMD_STRING) == 0) {
+        my_memset(header->prog_name, 0, PROG_NAME_LENGTH + 1);
+        my_strcpy(header->prog_name, arg);
+    } else if (my_strcmp(command, COMMENT_CMD_STRING) != 0) {
+        print_invalid(pars_i);
+        return ERR;
+    } if (my_strcmp(command, COMMENT_CMD_STRING) == 0) {
+        my_memset(header->comment, 0, COMMENT_LENGTH + 1);
+        my_strcpy(header->comment, arg);
+    } else if (my_strcmp(command, NAME_CMD_STRING) != 0) {
+        print_invalid(pars_i);
+        return ERR;
+    }
+    return SUCC;
+}
+
+static int handle_to_fill_header(header_t *header, char *line,
+    struct pars_counter *pars_i)
 {
     char **array = my_str_to_word_array(line, "\"\n\t");
+    char *command = NULL;
 
     if (array == NULL)
         return ERR;
-    if (my_tablen(array) != 2)
+    command = my_strtok(array[0], " ");
+    if (header_error_handling(command, array, line, pars_i) == ERR)
         return ERR;
-    if (my_strcmp(to_fill, NAME_CMD_STRING) == 0) {
-        my_memset(header->prog_name, 0, PROG_NAME_LENGTH + 1);
-        my_strcpy(header->prog_name, array[1]);
-    } else if (my_strcmp(to_fill, COMMENT_CMD_STRING) == 0) {
-        my_memset(header->comment, 0, COMMENT_LENGTH + 1);
-        my_strcpy(header->comment, array[1]);
-    }
+    if (fill_header(command, array[1], header, pars_i) == ERR)
+        return ERR;
+    free(command);
     my_free_array(array);
     return SUCC;
 }
 
-int write_header(int compile_filed_fd, FILE *old_file_fd)
+int write_header(int compile_filed_fd, FILE *old_file_fd,
+    struct pars_counter *pars_i)
 {
     char *line = NULL;
     size_t size = 0;
@@ -40,17 +77,15 @@ int write_header(int compile_filed_fd, FILE *old_file_fd)
 
     if (getline(&line, &size, old_file_fd) == ERR)
         return ERR;
-    if (my_strstr(line, NAME_CMD_STRING) != NULL)
-        handle_to_fill_header(&header, line, NAME_CMD_STRING);
-    else
+    ++pars_i->line;
+    if (handle_to_fill_header(&header, line, pars_i) == ERR)
         return ERR;
     header.magic = my_bswap(COREWAR_EXEC_MAGIC);
     header.prog_size = my_bswap(2214);
     if (getline(&line, &size, old_file_fd) == ERR)
         return ERR;
-    if (my_strstr(line, COMMENT_CMD_STRING) != NULL)
-        handle_to_fill_header(&header, line, COMMENT_CMD_STRING);
-    else
+    ++pars_i->line;
+    if (handle_to_fill_header(&header, line, pars_i) == ERR)
         return ERR;
     write(compile_filed_fd, &header, sizeof(header));
     return SUCC;
