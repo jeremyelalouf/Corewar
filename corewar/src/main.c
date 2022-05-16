@@ -34,9 +34,9 @@ static int is_instruction_reg_or_index(int k, uint8_t type_param,
 {
     if (TAB_INSTRUCTION[k].have_index == TRUE) {
         if (type_param != T_REG)
-            param_size = IND_SIZE;
+           *param_size = IND_SIZE;
         else
-            param_size = REG_BYTE_SIZE;
+            *param_size = REG_BYTE_SIZE;
         return (TRUE);
     } else {
         return (FALSE);
@@ -65,9 +65,7 @@ int *get_read_size(uint8_t instruction, uint8_t coding_byte)
     printf("%c %c\n", instruction, coding_byte);
     if (param_size == NULL)
         return NULL;
-    while (op_tab[i].code != instruction)
-        ++i;
-    while (j < op_tab[i].nbr_args) {
+    while (j < op_tab[instruction - 1].nbr_args) {
         type_param = ((coding_byte << 2 * j & 0xff) >> 6);
         if (is_instruction_with_index(j, type_param, instruction,
         param_size)) {
