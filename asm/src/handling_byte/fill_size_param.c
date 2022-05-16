@@ -53,8 +53,6 @@ int get_parameters_size(struct instruction *instruction)
     int j = 0;
     uint8_t type_param = 0;
 
-    if (instruction->coding_byte == ERR_UNSIGNED)
-        return ERR;
     while (op_tab[i].code != instruction->instruction)
         ++i;
     while (j < op_tab[i].nbr_args) {

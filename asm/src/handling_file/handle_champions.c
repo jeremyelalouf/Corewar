@@ -18,6 +18,7 @@ static int call_check_function(
     struct instruction *instruction)
 {
     char **array = my_str_to_word_array(command, " ,\t\n");
+    int return_value = 0;
 
     if (array == NULL)
         return ERR;
@@ -26,7 +27,10 @@ static int call_check_function(
     for (int i = 0; i != sizeof(INSTRUCTION_TAB) / sizeof(*INSTRUCTION_TAB);
         ++i) {
         if (my_strcmp(array[0], INSTRUCTION_TAB[i].instruction) == 0)
-            INSTRUCTION_TAB[i].function(instruction, array, compile_filed_fd);
+            return_value = INSTRUCTION_TAB[i].function(instruction, array + 1,
+                compile_filed_fd);
+        if (return_value == ERR)
+            return ERR;
     }
     return SUCC;
 }

@@ -64,6 +64,8 @@ void print_syntax(struct pars_counter *pars_i);
 
 void print_no_name(struct pars_counter *pars_i);
 
+int fill_params_array(struct instruction *instruction, char **params);
+
 uint8_t create_coding_byte(int instruction, char **param);
 
 int is_size_param_valid(int type, char *param);
