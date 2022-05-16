@@ -10,6 +10,7 @@
     #define ATOD(x)     (x - '@')
     #define DTOA(x)     (x + '0')
     #define ADTOD(x)    (x - '0')
+    #define UNUSED         __attribute__((unused))
     #define EXIT_ERR    84
     #define FALSE       0
     #define TRUE        1
@@ -21,6 +22,8 @@
 int my_isneg(int);
 
 void my_put_nbr(int);
+
+void my_put_nberr(int);
 
 void my_putchar(char);
 
@@ -58,6 +61,8 @@ int my_str_isprintable(const char *);
 
 int my_strcmp(const char *, const char *);
 
+char *my_strstr(char const *, char const *);
+
 int my_strncmp(const char *, const char *, int);
 
 // String manipulation functions:
@@ -80,9 +85,11 @@ char *my_strncpy(char *, const char *, int);
 
 char *my_strncat(char *, const char *, int);
 
+char *my_strrchr(const char *string, int c);
+
 // Memory manipulations functions:
 
-void my_memset(char *, int, int);
+void my_memset(void *s, int c, int n);
 
 void my_memcpy(void *, const void *, int);
 
@@ -90,7 +97,7 @@ void my_memcpy(void *, const void *, int);
 
 void *my_realloc(void *, int, int, int);
 
-void *my_reallocarray(void *, int, int, int);
+void *my_reallocarray(void *ptr, int nmemb, int size, int last_nmemb);
 
 // Tokenise and stwa functions:
 

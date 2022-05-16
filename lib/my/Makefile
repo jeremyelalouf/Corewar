@@ -51,6 +51,8 @@ LIB			=		$(addsuffix .c,			\
 					my_strupcase			\
 					my_str_to_word_array	\
 					my_swap					\
+					my_strstr				\
+					my_strrchr				\
 					my_tablen)				\
 
 OBJ			=		$(LIB:.c=.o)

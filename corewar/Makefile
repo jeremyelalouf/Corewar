@@ -9,7 +9,8 @@ MAIN		=	./src/main.c				\
 
 SRC			=	$(addsuffix .c,				\
 				$(addprefix src/,			\
-					error_handling))		\
+					error_handling \
+					instructions))		\
 
 SRC_TEST	=	$(addsuffix .c,				\
 				$(addprefix tests/,			\
