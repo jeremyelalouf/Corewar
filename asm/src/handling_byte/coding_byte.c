@@ -11,8 +11,8 @@
 
 static int is_register_valid(char *reg)
 {
-    if (my_strlen(reg) < 4 && my_str_isnum(&reg[1]) &&
-        my_getnbr(&reg[1]) > 0 && my_getnbr(&reg[1]) <= REG_NUMBER)
+    if (my_str_isnum(&reg[1]) && my_getnbr(&reg[1]) > 0 &&
+    my_getnbr(&reg[1]) <= REG_NUMBER)
         return (TRUE);
     return (FALSE);
 }
