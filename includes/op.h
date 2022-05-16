@@ -7,6 +7,7 @@
 
 #ifndef _OP_H_
     #define _OP_H_
+    #include "my.h"
     #define MEM_SIZE (6 * 1024)
     #define MAX_ARGS_NUMBER 4
     #define IDX_MOD 512
@@ -86,6 +87,30 @@ static const op_t op_tab[] = {
     {"lfork", 1, {T_DIR}, 15, 1000, "long fork"},
     {"aff", 1, {T_REG}, 16, 2, "aff"},
     {0, 0, {0}, 0, 0, 0}
+};
+
+typedef struct instruction_w_index {
+    char instruction;
+    int have_index;
+} instruction_w_index_t;
+
+static const instruction_w_index_t TAB_INSTRUCTION[] =  {
+    { 1, FALSE },
+    { 2, FALSE },
+    { 3, FALSE },
+    { 4, FALSE },
+    { 5, FALSE },
+    { 6, FALSE },
+    { 7, FALSE },
+    { 8, FALSE },
+    { 9, TRUE },
+    { 10, TRUE },
+    { 11, TRUE },
+    { 12, TRUE },
+    { 13, FALSE },
+    { 14, TRUE },
+    { 15, TRUE },
+    { 16, FALSE },
 };
 
 #endif /* !_OP_H_ */

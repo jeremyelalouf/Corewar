@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2022
 ** corewar
 ** File description:
-** function to fill union of params and to find size of write for params
+** fill_size_param
 */
 
 #include <stdint.h>
@@ -21,36 +21,36 @@ static int get_size_type(uint8_t type_param)
     }
 }
 
-static int is_instruction_reg_or_index(int k, int *size,
-    uint8_t type_param)
+static int is_instruction_reg_or_index(int k, uint8_t type_param,
+    struct arg *args)
 {
     if (TAB_INSTRUCTION[k].have_index == TRUE) {
         if (type_param != T_REG)
-            *size += IND_SIZE;
+            args->size += IND_SIZE;
         else
-            *size += REG_BYTE_SIZE;
+            args->size += REG_BYTE_SIZE;
         return (TRUE);
     } else {
         return (FALSE);
     }
 }
 
-static int is_instruction_with_index(int *size, uint8_t type_param,
+static int is_instruction_with_index(int j, uint8_t type_param,
     struct instruction *instruction)
 {
     for (int k = 0; k < NBR_OF_INSTRUCTION; ++k) {
         if (instruction->instruction == TAB_INSTRUCTION[k].instruction) {
-            return (is_instruction_reg_or_index(k, size, type_param));
+            return (is_instruction_reg_or_index(k, type_param,
+                &instruction->params[j]));
         }
     }
     return (FALSE);
 }
 
-int get_size_from_coding_byte(struct instruction *instruction)
+int get_parameters_size(struct instruction *instruction)
 {
     int i = 0;
     int j = 0;
-    int size = 0;
     uint8_t type_param = 0;
 
     if (instruction->coding_byte == ERR_UNSIGNED)
@@ -59,13 +59,13 @@ int get_size_from_coding_byte(struct instruction *instruction)
         ++i;
     while (j < op_tab[i].nbr_args) {
         type_param = ((instruction->coding_byte << 2 * j & 0xff) >> 6);
-        if (is_instruction_with_index(&size, type_param, instruction)
+        if (is_instruction_with_index(j, type_param, instruction)
             == TRUE) {
             ++j;
             continue;
         }
-        size += get_size_type(type_param);
+        instruction->params[j].size = get_size_type(type_param);
         ++j;
     }
-    return (size);
+    return (SUCC);
 }

@@ -17,11 +17,6 @@
     #define VAL_IND       3
     #define REG_BYTE_SIZE 1
 
-typedef struct instruction_w_index {
-    uint8_t instruction;
-    int have_index;
-} instruction_w_index_t;
-
 union type {
     uint32_t direct;
     uint16_t indirect;
