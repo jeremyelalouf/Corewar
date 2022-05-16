@@ -17,8 +17,17 @@ static void print_byte_as_bits(char val)
 int check_live(UNUSED struct instruction *instruction, UNUSED char **params,
     UNUSED int fd)
 {
+    int params_nbr = 0;
+
     instruction->instruction = 1;
     instruction->coding_byte = create_coding_byte(1, params + 1);
+    if (instruction->coding_byte == FALSE)
+        return ERR;
+    params_nbr = get_size_from_coding_byte(instruction);
+    for (int i = 0; i <= params_nbr; ++i) {
+        get_parameters_size(instruction);
+        printf("size = %d\n", instruction->params[i].size);
+    }
     return SUCC;
 }
 

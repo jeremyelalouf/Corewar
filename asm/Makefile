@@ -15,6 +15,7 @@ SRC			=	$(addsuffix .c,					\
 				third_check_functions			\
 				fourth_check_functions)			\
 				$(addprefix handling_byte/,		\
+				fill_size_param					\
 				get_size_write_params			\
 				coding_byte)					\
 				$(addprefix handling_file/,		\
