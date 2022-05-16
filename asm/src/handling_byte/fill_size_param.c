@@ -67,5 +67,5 @@ int get_parameters_size(struct instruction *instruction)
         instruction->params[j].size = get_size_type(type_param);
         ++j;
     }
-    return (SUCC);
+    return (j);
 }

@@ -70,8 +70,6 @@ int is_size_param_valid(int type, char *param);
 
 int get_parameters_size(struct instruction *instruction);
 
-int get_size_from_coding_byte(struct instruction *instruction);
-
 int write_champions(int compile_filed_fd, FILE *old_file_fd);
 
 int write_header(int compile_filed_fd, FILE *old_file_fd,
