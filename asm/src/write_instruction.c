@@ -19,17 +19,23 @@ static const write_function_t TAB_WRITE_FUNCTION[] = {
 
 void write_register(int fd, union type *params)
 {
-    write(fd, &params->reg, REG_BYTE_SIZE);
+    uint8_t big_endian = my_bswap(params->reg);
+
+    write(fd, &big_endian, REG_BYTE_SIZE);
 }
 
 void write_direct(int fd, union type *params)
 {
-    write(fd, &params->direct, DIR_SIZE);
+    uint32_t big_endian = my_bswap(params->direct);
+
+    write(fd, &big_endian, DIR_SIZE);
 }
 
 void write_indirect(int fd, union type *params)
 {
-    write(fd, &params->indirect, IND_SIZE);
+    uint16_t big_endian = my_bswap(params->indirect);
+
+    write(fd, &big_endian, IND_SIZE);
 }
 
 static void call_write_of_param(int fd, int j, struct instruction *instruction)

@@ -69,5 +69,7 @@ uint8_t create_coding_byte(int instruction, char **param)
             return (ERR_UNSIGNED);
         ++i;
     }
+    if (op_tab[instruction].nbr_args != i)
+        return (ERR_UNSIGNED);
     return (coding_byte);
 }
