@@ -97,7 +97,7 @@ void get_instruction(uint8_t *arene)
     return;
 }
 
-int decriptage(char const *filepath, u_int8_t *arene)
+int decriptage(char const *filepath, uint8_t *arene)
 {
     int fd = open(filepath, O_RDONLY);
     int little = 0;
@@ -124,7 +124,7 @@ int decriptage(char const *filepath, u_int8_t *arene)
 
 int game(char const *filepath)
 {
-    u_int8_t *arene = malloc(sizeof(u_int8_t) * MEM_SIZE);
+    uint8_t *arene = malloc(sizeof(uint8_t) * MEM_SIZE);
 
     if (arene == NULL)
         return -1;

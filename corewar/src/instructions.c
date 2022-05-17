@@ -12,83 +12,88 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <stdint.h>
 
-void live(u_int8_t *arene)
+#include "op.h"
+
+void live(int nb)
 {
-    printf("live\n");
+    my_putstr("Le joueur ");
+    my_put_nbr(nb);
+    my_putstr(" est en vie.\n");
 }
 
-void ld(u_int8_t *arene)
+void ld(uint8_t *arene)
 {
     printf("ld\n");
 }
 
-void st(u_int8_t *arene)
+void st(uint8_t *arene)
 {
     printf("st\n");
 }
 
-void add(u_int8_t *arene)
+void add(int r1, int r2, int *r3)
 {
-    printf("add\n");
+    *r3 = r1 + r2;
 }
 
-void sub(u_int8_t *arene)
+void sub(int r1, int r2, int *r3)
 {
-    printf("sub\n");
+    *r3 = r1 - r2;
 }
 
-void and(u_int8_t *arene)
+void and(uint8_t *arene)
 {
     printf("and\n");
 }
 
-void or(u_int8_t *arene)
+void or(uint8_t *arene)
 {
     printf("or\n");
 }
 
-void xor(u_int8_t *arene)
+void xor(uint8_t *arene)
 {
     printf("xor\n");
 }
 
-void zjmp(u_int8_t *arene)
+void zjmp(uint8_t *arene)
 {
     printf("zjmp\n");
 }
 
-void ldi(u_int8_t *arene)
+void ldi(uint8_t *arene)
 {
     printf("ldi\n");
 }
 
-void sti(u_int8_t *arene)
+void sti(uint8_t *arene)
 {
     printf("sti\n");
 }
 
-void my_fork(u_int8_t *arene)
+void my_fork(uint8_t *arene)
 {
     printf("lfork\n");
 }
 
-void lld(u_int8_t *arene)
+void lld(uint8_t *arene)
 {
     printf("lld\n");
 }
 
-void lldi(u_int8_t *arene)
+void lldi(uint8_t *arene)
 {
     printf("lldi\n");
 }
 
-void lfork(u_int8_t *arene)
+void lfork(uint8_t *arene)
 {
     printf("lfork\n");
 }
 
-void aff(u_int8_t *arene)
+void aff(uint8_t *arene)
 {
     printf("aff\n");
 }
