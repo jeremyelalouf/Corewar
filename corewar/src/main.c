@@ -124,12 +124,12 @@ int decriptage(char const *filepath, uint8_t *arene)
 
 void handle_n_flag(struct champion *c, int value)
 {
-    printf("-n\n");
+    c->nb = value;
 }
 
 void handle_a_flag(struct champion *c, int value)
 {
-    printf("-a\n");
+    c->address = value;
 }
 
 static const struct handle_flags FLAGS[] = {
@@ -137,11 +137,11 @@ static const struct handle_flags FLAGS[] = {
     {.flag = "-a", .func = &handle_a_flag},
 };
 
-int handle_flags(struct champion *result, char *flag)
+int handle_flags(struct champion *result, char *flag, char *value)
 {
     for (int i = 0; i != FLAGS_NUMBER; ++i) {
         if (my_strcmp(flag, FLAGS[i].flag) == 0) {
-            FLAGS[i].func (result, my_getnbr(flag));
+            FLAGS[i].func (result, my_getnbr(value));
             return SUCC;
         }
     }
@@ -158,9 +158,15 @@ struct champion *get_all_champions(int ac, char *av[])
             (champions_nbr + 1));
         ++champions_nbr;
         if (av[i][0] == '-') {
-            if (handle_flags(result, av[i + 1]) == ERR)
+            if (ac > i + 1) {
+                if (handle_flags(result, av[i], av[i + 1]) == ERR)
+                    return NULL;
+                if (ac > i + 2)
+                    i += 2;
+                else
+                    return NULL;
+            } else
                 return NULL;
-            i += 2;
         }
         printf("%s\n", av[i]);
     }

@@ -16,8 +16,6 @@ void display_usages(void)
 
 int error_handling(int ac, char const *av[])
 {
-    if (ac != 2)
-        return -1;
     if (my_strcmp(av[1], "-h") == 0) {
         display_usages();
         exit(0);

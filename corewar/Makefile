@@ -20,7 +20,7 @@ OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
 OBJ_TEST	=	$(SRC:.c=.o) $(SRC_TEST:.c=.o)
 
-CFLAGS		+=	-Wall -Wextra
+CFLAGS		=	-Wall -Wextra
 
 CPPFLAGS 	+=	-I../includes
 
