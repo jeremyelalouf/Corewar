@@ -19,6 +19,9 @@ SRC			=	$(addsuffix .c,					\
 				fill_params_array				\
 				coding_byte)					\
 				$(addprefix handling_file/,		\
+				has_coding_byte					\
+				label_handling					\
+				write_label						\
 				get_new_file_name				\
 				handle_champions				\
 				handle_header)					\

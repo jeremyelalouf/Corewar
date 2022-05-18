@@ -68,6 +68,17 @@ static int handle_to_fill_header(header_t *header, char *line,
     return SUCC;
 }
 
+static int handle_comment(char *line, size_t size, FILE *old_file_fd)
+{
+    while (1) {
+        if (getline(&line, &size, old_file_fd) == ERR)
+            return ERR;
+        if (line[0] != '#')
+            break;
+    }
+    return SUCC;
+}
+
 int write_header(int compile_filed_fd, FILE *old_file_fd,
     struct pars_counter *pars_i, int *params_debute)
 {
@@ -75,12 +86,7 @@ int write_header(int compile_filed_fd, FILE *old_file_fd,
     size_t size = 0;
     header_t header = {0};
 
-    while (1) {
-        if (getline(&line, &size, old_file_fd) == ERR)
-            return ERR;
-        if (line[0] != '#')
-            break;
-    }
+    handle_comment(line, size, old_file_fd);
     ++pars_i->line;
     if (handle_to_fill_header(&header, line, pars_i) == ERR)
         return ERR;
