@@ -96,21 +96,6 @@ void get_instruction(uint8_t *arene)
     return;
 }
 
-int decriptage(char const *filepath, uint8_t *arene)
-{
-    int fd = open(filepath, O_RDONLY);
-    int little = 0;
-    header_t header;
-
-    if (fd == -1)
-        return -1;
-    read(fd, &header, sizeof(header_t));
-    little = my_bswap(header.prog_size);
-    read(fd, arene, little);
-    get_instruction(arene);
-    close(fd);
-    return 0;
-}
 
 // TODO ! on a l'arène de remplie avec un seul champion -> pouvoir mettre une infinité de champion tant que la mémoire n'est pas pleine.
 // TODO ! l'étape d'après c'est de récupérer les instructions dans des structures insctructions qui sont déjà créer avec l'asm
@@ -135,13 +120,11 @@ static const struct handle_flags FLAGS[] = {
     {.flag = "-a", .func = &handle_a_flag},
 };
 
-int handle_flags(struct champion *result, char *flag, char *value, int *index)
+int handle_flags(struct champion *result, char **av, int *index)
 {
-    if (value == NULL)
-        return ERR;
     for (int i = 0; i != FLAGS_NUMBER; ++i) {
-        if (my_strcmp(flag, FLAGS[i].flag) == 0) {
-            FLAGS[i].func (result, my_getnbr(value));
+        if (my_strcmp(av[*index], FLAGS[i].flag) == 0) {
+            FLAGS[i].func (result, my_getnbr(av[*index + 1]));
             *index += 2;
             return SUCC;
         }
@@ -149,31 +132,76 @@ int handle_flags(struct champion *result, char *flag, char *value, int *index)
     return ERR;
 }
 
-struct champion *get_all_champions(int ac, char *av[])
+int decriptage(char const *filepath, uint8_t *arene)
+{
+    int fd = open(filepath, O_RDONLY);
+    int little = 0;
+    header_t header;
+
+    if (fd == -1)
+        return -1;
+    read(fd, &header, sizeof(header_t));
+    little = my_bswap(header.prog_size);
+    read(fd, arene, little);
+    get_instruction(arene);
+    close(fd);
+    return 0;
+}
+
+int read_champions(struct champion *result, int champions_nbr,
+    int *index, const char *av[])
+{
+    int fd = open(av[*index], O_RDONLY);
+    UNUSED int little = 0;
+    header_t header;
+
+    if (fd == -1)
+        return -1;
+    read(fd, &header, sizeof(header_t));
+    if (my_swapb(header.magic) != COREWAR_EXEC_MAGIC) {
+        printf("magic = %i\nfilepath = %s\n", my_swapb(header.magic), av[*index]);
+        return -1;
+    }
+    // little = my_bswap(header.prog_size);
+    //     return -1;
+    *index += 1;
+    close(fd);
+    return 0;
+}
+
+struct champion *get_all_champions(int ac, const char *av[])
 {
     struct champion *result = NULL;
     int champions_nbr = 0;
+    int i = 1;
 
-    for (int i = 1; i < ac; ++i) {
+    while (i < ac) {
         ++champions_nbr;
         result = realloc(result, sizeof(struct champion) * champions_nbr);
         if (result == NULL)
             return NULL;
-        if (av[i][0] == '-') {
-            if (handle_flags(result, av[i], av[i + 1], &i) == ERR)
-                    return NULL;
+        if (my_strcmp(av[i], "-dump") == 0) {
+            i += 2;
+            printf("hello\n");
         }
-        printf("%i\n", result->nb);
+        if (av[i][0] == '-') {
+            if (handle_flags(result + (champions_nbr - 1), (char **)av, &i) == ERR)
+                    return NULL;
+        } else
+            if (read_champions(result, champions_nbr, &i, av) == -1)
+                return NULL;
     }
     return result;
 }
 
 int corewar(int ac, const char *av[])
 {
-    struct champion *champions = get_all_champions(ac, (char **)av);
-
+    struct champion *champions = get_all_champions(ac, av);
+    
     if (champions == NULL)
         return ERR;
+    printf("%i\n", champions->nb);
+    printf("%i\n", champions[1].nb);
     return 0;
 }
 
