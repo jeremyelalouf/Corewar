@@ -75,14 +75,18 @@ int write_header(int compile_filed_fd, FILE *old_file_fd,
     size_t size = 0;
     header_t header = {0};
 
-    if (getline(&line, &size, old_file_fd) == ERR)
-        return ERR;
+    while (1) {
+        if (getline(&line, &size, old_file_fd) == ERR)
+            return ERR;
+        if (line[0] != '#')
+            break;
+    }
     ++pars_i->line;
     if (handle_to_fill_header(&header, line, pars_i) == ERR)
         return ERR;
     header.magic = COREWAR_EXEC_MAGIC;
     my_bswap(&header.magic, sizeof(header.magic));
-    header.prog_size = 2214;
+    header.prog_size = 0;
     my_bswap(&header.prog_size, sizeof(header.prog_size));
     if (getline(&line, &size, old_file_fd) == ERR)
         return ERR;
