@@ -14,7 +14,7 @@ void display_usages(void)
     my_putstr("Usage: ./yolotron-asm [source file] [output file]\n");
 }
 
-int error_handling(int ac, char const *av[])
+int error_handling(UNUSED int ac, char const *av[])
 {
     if (my_strcmp(av[1], "-h") == 0) {
         display_usages();
