@@ -26,12 +26,13 @@ void live(int nb, char const *name)
     my_putstr(") est en vie.\n");
 }
 
-void ld(int nb, int *rx, uint8_t *pc)
+void ld(UNUSED int nb, UNUSED int *rx, UNUSED uint8_t *pc)
 {
-    *rx = pc + nb % IDX_MOD;
+    // *rx = pc + nb % IDX_MOD;
+    printf("ld\n");
 }
 
-void st(int *nb1, int *nb2, uint8_t *pc, uint8_t coding_byte)
+void st(UNUSED int *nb1, UNUSED int *nb2, UNUSED uint8_t *pc, UNUSED uint8_t coding_byte)
 {
     
     // if les deux sont des r, r1 dans r2
@@ -39,7 +40,7 @@ void st(int *nb1, int *nb2, uint8_t *pc, uint8_t coding_byte)
     printf("st\n");
 }
 
-int add(struct instruction * const i, uint8_t *arene)
+void add(struct instruction * const i, uint8_t *arene)
 {
     arene[(i->params[2].types.reg - 1) * REG_SIZE] =
         arene[(i->params[1].types.reg - 1) * REG_SIZE]
@@ -53,57 +54,57 @@ void sub(struct instruction * const i, uint8_t *arene)
         - arene[(i->params[0].types.reg - 1) * REG_SIZE];
 }
 
-void and(uint8_t *arene)
+void and(UNUSED uint8_t *arene)
 {
     printf("and\n");
 }
 
-void or(uint8_t *arene)
+void or(UNUSED uint8_t *arene)
 {
     printf("or\n");
 }
 
-void xor(uint8_t *arene)
+void xor(UNUSED uint8_t *arene)
 {
     printf("xor\n");
 }
 
-void zjmp(uint8_t *arene)
+void zjmp(UNUSED uint8_t *arene)
 {
     printf("zjmp\n");
 }
 
-void ldi(uint8_t *arene)
+void ldi(UNUSED uint8_t *arene)
 {
     printf("ldi\n");
 }
 
-void sti(uint8_t *arene)
+void sti(UNUSED uint8_t *arene)
 {
     printf("sti\n");
 }
 
-void my_fork(uint8_t *arene)
+void my_fork(UNUSED uint8_t *arene)
 {
     printf("lfork\n");
 }
 
-void lld(uint8_t *arene)
+void lld(UNUSED uint8_t *arene)
 {
     printf("lld\n");
 }
 
-void lldi(uint8_t *arene)
+void lldi(UNUSED uint8_t *arene)
 {
     printf("lldi\n");
 }
 
-void lfork(uint8_t *arene)
+void lfork(UNUSED uint8_t *arene)
 {
     printf("lfork\n");
 }
 
-void aff(uint8_t *arene)
+void aff(UNUSED uint8_t *arene)
 {
     printf("aff\n");
 }
