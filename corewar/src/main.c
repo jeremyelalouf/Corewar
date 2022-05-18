@@ -131,7 +131,6 @@ int game(char const *filepath)
     memset(arene, 0, MEM_SIZE - 1);
     if (decriptage(filepath, arene) == -1)
         return -1;
-
     free(arene);
     return 0;
 }

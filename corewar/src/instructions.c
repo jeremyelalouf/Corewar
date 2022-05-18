@@ -1,6 +1,6 @@
 /*
 ** EPITECH PROJECT, 2022
-** instructions.c
+** instructions
 ** File description:
 ** instructions
 */
@@ -15,32 +15,42 @@
 #include <stdint.h>
 
 #include "op.h"
+#include "corewar.h"
 
-void live(int nb)
+void live(int nb, char const *name)
 {
     my_putstr("Le joueur ");
     my_put_nbr(nb);
-    my_putstr(" est en vie.\n");
+    my_putstr(" (");
+    my_putstr(name);
+    my_putstr(") est en vie.\n");
 }
 
-void ld(uint8_t *arene)
+void ld(int nb, int *rx, uint8_t *pc)
 {
-    printf("ld\n");
+    *rx = pc + nb % IDX_MOD;
 }
 
-void st(uint8_t *arene)
+void st(int *nb1, int *nb2, uint8_t *pc, uint8_t coding_byte)
 {
+    
+    // if les deux sont des r, r1 dans r2
+    // sinon pc + nb % IDX_MOD = *rx;
     printf("st\n");
 }
 
-void add(int r1, int r2, int *r3)
+int add(struct instruction * const i, uint8_t *arene)
 {
-    *r3 = r1 + r2;
+    arene[(i->params[2].types.reg - 1) * REG_SIZE] =
+        arene[(i->params[1].types.reg - 1) * REG_SIZE]
+        + arene[(i->params[0].types.reg - 1) * REG_SIZE];
 }
 
-void sub(int r1, int r2, int *r3)
+void sub(struct instruction * const i, uint8_t *arene)
 {
-    *r3 = r1 - r2;
+    arene[(i->params[2].types.reg - 1) * REG_SIZE] =
+        arene[(i->params[1].types.reg - 1) * REG_SIZE]
+        - arene[(i->params[0].types.reg - 1) * REG_SIZE];
 }
 
 void and(uint8_t *arene)
