@@ -57,7 +57,6 @@ static int is_instruction_with_index(int j, uint8_t type_param,
 
 int *get_read_size(uint8_t instruction, uint8_t coding_byte)
 {
-    int i = 0;
     int j = 0;
     uint8_t type_param = 0;
     int *param_size = malloc(sizeof(int) * 4);
@@ -102,7 +101,6 @@ int decriptage(char const *filepath, uint8_t *arene)
     int fd = open(filepath, O_RDONLY);
     int little = 0;
     header_t header;
-    int nb;
 
     if (fd == -1)
         return -1;
@@ -137,11 +135,14 @@ static const struct handle_flags FLAGS[] = {
     {.flag = "-a", .func = &handle_a_flag},
 };
 
-int handle_flags(struct champion *result, char *flag, char *value)
+int handle_flags(struct champion *result, char *flag, char *value, int *index)
 {
+    if (value == NULL)
+        return ERR;
     for (int i = 0; i != FLAGS_NUMBER; ++i) {
         if (my_strcmp(flag, FLAGS[i].flag) == 0) {
             FLAGS[i].func (result, my_getnbr(value));
+            *index += 2;
             return SUCC;
         }
     }
@@ -153,22 +154,16 @@ struct champion *get_all_champions(int ac, char *av[])
     struct champion *result = NULL;
     int champions_nbr = 0;
 
-    for (int i = 1; av[i] != NULL; ++i) {
-        result = realloc(result, sizeof(struct champion) *
-            (champions_nbr + 1));
+    for (int i = 1; i < ac; ++i) {
         ++champions_nbr;
+        result = realloc(result, sizeof(struct champion) * champions_nbr);
+        if (result == NULL)
+            return NULL;
         if (av[i][0] == '-') {
-            if (ac > i + 1) {
-                if (handle_flags(result, av[i], av[i + 1]) == ERR)
+            if (handle_flags(result, av[i], av[i + 1], &i) == ERR)
                     return NULL;
-                if (ac > i + 2)
-                    i += 2;
-                else
-                    return NULL;
-            } else
-                return NULL;
         }
-        printf("%s\n", av[i]);
+        printf("%i\n", result->nb);
     }
     return result;
 }
