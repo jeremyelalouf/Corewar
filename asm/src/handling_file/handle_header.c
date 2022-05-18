@@ -69,7 +69,7 @@ static int handle_to_fill_header(header_t *header, char *line,
 }
 
 int write_header(int compile_filed_fd, FILE *old_file_fd,
-    struct pars_counter *pars_i)
+    struct pars_counter *pars_i, int *params_debute)
 {
     char *line = NULL;
     size_t size = 0;
@@ -80,13 +80,16 @@ int write_header(int compile_filed_fd, FILE *old_file_fd,
     ++pars_i->line;
     if (handle_to_fill_header(&header, line, pars_i) == ERR)
         return ERR;
-    header.magic = my_bswap(COREWAR_EXEC_MAGIC);
-    header.prog_size = my_bswap(2214);
+    header.magic = COREWAR_EXEC_MAGIC;
+    my_bswap(&header.magic, sizeof(header.magic));
+    header.prog_size = 2214;
+    my_bswap(&header.prog_size, sizeof(header.prog_size));
     if (getline(&line, &size, old_file_fd) == ERR)
         return ERR;
     ++pars_i->line;
     if (handle_to_fill_header(&header, line, pars_i) == ERR)
         return ERR;
     write(compile_filed_fd, &header, sizeof(header));
+    *params_debute = sizeof(header);
     return SUCC;
 }

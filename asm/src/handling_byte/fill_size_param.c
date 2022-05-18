@@ -26,9 +26,9 @@ static int is_instruction_reg_or_index(int k, uint8_t type_param,
 {
     if (TAB_INSTRUCTION[k].have_index == TRUE) {
         if (type_param != T_REG)
-            args->size += IND_SIZE;
+            args->size = IND_SIZE;
         else
-            args->size += REG_BYTE_SIZE;
+            args->size = REG_BYTE_SIZE;
         return (TRUE);
     } else {
         return (FALSE);

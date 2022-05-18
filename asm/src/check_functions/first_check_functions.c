@@ -33,6 +33,7 @@ int check_ld(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -43,6 +44,7 @@ int check_st(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -53,6 +55,7 @@ int check_add(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -63,5 +66,6 @@ int check_sub(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }

@@ -32,19 +32,26 @@ struct instruction {
     uint8_t instruction;
     uint8_t coding_byte;
     struct arg params[MAX_ARGS_NUMBER];
+    int index;
 };
 
-typedef struct label_s {
-    int *pos;
-    char **name;
-    int *call;
-    int label_nbr;
-    int call_nbr;
-} label_t;
+struct label {
+    char *label_name;
+    int label_pos;
+    int label_index;
+    int size_to_write;
+};
+
+struct label_referenced {
+    struct label *call;
+    int call_size;
+    struct label *def;
+    int def_size;
+};
 
 struct toolbox {
     struct instruction *instructions;
-    label_t labels;
+    struct label_referenced labels;
 };
 
 struct pars_counter {
@@ -77,10 +84,11 @@ int is_size_param_valid(int type, char *param);
 
 int get_parameters_size(struct instruction *instruction);
 
-int write_champions(int compile_filed_fd, FILE *old_file_fd);
+int write_champions(int compile_filed_fd, FILE *old_file_fd,
+    int params_debute);
 
 int write_header(int compile_filed_fd, FILE *old_file_fd,
-    struct pars_counter *pars_i);
+    struct pars_counter *pars_i, int *params_debute);
 
 void write_indirect(int fd, union type *params);
 

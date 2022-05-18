@@ -1,6 +1,8 @@
 .vscode
 *.o
+*.a
 *~
 *.s
 *.cor
+asm
 assets

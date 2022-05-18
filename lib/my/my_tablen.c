@@ -13,7 +13,7 @@ int my_tablen(char *tab[])
     int tab_len = 0;
 
     if (tab == NULL)
-        return ERR;
+        return 0;
     for (; tab[tab_len] != NULL; tab_len++);
     return (tab_len);
 }

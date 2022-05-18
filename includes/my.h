@@ -7,6 +7,7 @@
 
 #ifndef MY_H_
     #define MY_H_
+    #include <stddef.h>
     #define ATOD(x)     (x - '@')
     #define DTOA(x)     (x + '0')
     #define ADTOD(x)    (x - '0')
@@ -135,7 +136,7 @@ int my_strlen(const char *);
 
 // 
 
-int my_bswap(int);
+void my_bswap(void *value, size_t size);
 
 void my_swap(int *, int *);
 

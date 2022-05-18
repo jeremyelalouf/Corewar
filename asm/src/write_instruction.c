@@ -24,16 +24,14 @@ void write_register(int fd, union type *params)
 
 void write_direct(int fd, union type *params)
 {
-    int big_endian = my_bswap(params->direct);
-
-    write(fd, &big_endian, DIR_SIZE);
+    my_bswap(&params->direct, sizeof(params->direct));
+    write(fd, &params->direct, DIR_SIZE);
 }
 
 void write_indirect(int fd, union type *params)
 {
-    int big_endian = my_bswap(params->indirect);
-
-    write(fd, &big_endian, IND_SIZE);
+    my_bswap(&params->indirect, sizeof(params->indirect));
+    write(fd, &params->indirect, IND_SIZE);
 }
 
 static void call_write_of_param(int fd, int j, struct instruction *instruction)
