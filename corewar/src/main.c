@@ -122,24 +122,65 @@ int decriptage(char const *filepath, uint8_t *arene)
 // write(fd2, arene, little);
 // close(fd2);
 
-int game(char const *filepath)
+void handle_n_flag(struct champion *c, int value)
 {
-    uint8_t *arene = malloc(sizeof(uint8_t) * MEM_SIZE);
+    printf("-n\n");
+}
 
-    if (arene == NULL)
-        return -1;
-    memset(arene, 0, MEM_SIZE - 1);
-    if (decriptage(filepath, arene) == -1)
-        return -1;
-    free(arene);
+void handle_a_flag(struct champion *c, int value)
+{
+    printf("-a\n");
+}
+
+static const struct handle_flags FLAGS[] = {
+    {.flag = "-n", .func = &handle_n_flag},
+    {.flag = "-a", .func = &handle_a_flag},
+};
+
+int handle_flags(struct champion *result, char *flag)
+{
+    for (int i = 0; i != FLAGS_NUMBER; ++i) {
+        if (my_strcmp(flag, FLAGS[i].flag) == 0) {
+            FLAGS[i].func (result, my_getnbr(flag));
+            return SUCC;
+        }
+    }
+    return ERR;
+}
+
+struct champion *get_all_champions(int ac, char *av[])
+{
+    struct champion *result = NULL;
+    int champions_nbr = 0;
+
+    for (int i = 1; av[i] != NULL; ++i) {
+        result = realloc(result, sizeof(struct champion) *
+            (champions_nbr + 1));
+        ++champions_nbr;
+        if (av[i][0] == '-') {
+            if (handle_flags(result, av[i + 1]) == ERR)
+                return NULL;
+            i += 2;
+        }
+        printf("%s\n", av[i]);
+    }
+    return result;
+}
+
+int corewar(int ac, const char *av[])
+{
+    struct champion *champions = get_all_champions(ac, (char **)av);
+
+    if (champions == NULL)
+        return ERR;
     return 0;
 }
 
-int main(int ac, char const *av[])
+int main(int argc, char const *argv[])
 {
-    if (error_handling(ac, av) == -1)
-        return 84;
-    if (game(av[1]) == -1)
-        return 84;
+    if (error_handling(argc, argv) == ERR)
+        return EXIT_ERR;
+    if (corewar(argc, argv) == ERR)
+        return EXIT_ERR;
     return 0;
 }

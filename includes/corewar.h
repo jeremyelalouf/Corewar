@@ -10,13 +10,14 @@
     #include <stdint.h>
     #include <stdio.h>
     #include "op.h"
-    #define MAX_FOUR_BYTES_VAL "2147483647"
-    #define MAX_TWO_BYTES_VAL  "32767"
-    #define NBR_OF_INSTRUCTION 16
+    #define MAX_FOUR_BYTES_VAL  "2147483647"
+    #define MAX_TWO_BYTES_VAL   "32767"
+    #define NBR_OF_INSTRUCTION  16
     #define ERR_UNSIGNED        0
-    #define VAL_IND       3
-    #define REG_BYTE_SIZE 1
-    #define END_OF_TAB    -1
+    #define VAL_IND             3
+    #define REG_BYTE_SIZE       1
+    #define END_OF_TAB          -1
+    #define FLAGS_NUMBER        2
 
 union type {
     uint32_t direct;
@@ -33,6 +34,15 @@ struct instruction {
     uint8_t instruction;
     uint8_t coding_byte;
     struct arg params[MAX_ARGS_NUMBER];
+};
+
+struct champion {
+    int actual_cycle;
+    int nb;
+    const char *filepath;
+    int address;
+    struct instruction *i;
+    header_t h;
 };
 
 typedef struct label_s {
@@ -57,6 +67,13 @@ typedef struct write_function {
     uint8_t size;
     void (*fun_ptr) (int, union type *);
 } write_function_t;
+
+typedef void handle_flag_t(struct champion *c, int value);
+
+struct handle_flags {
+    const char *flag;
+    handle_flag_t *func;
+};
 
 int error_handling(int ac, const char *av[]);
 
