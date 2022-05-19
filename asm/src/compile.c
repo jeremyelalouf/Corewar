@@ -41,8 +41,11 @@ int compile(char *av[])
     fd = open(compiled_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
     if (fd == -1)
         return ERR;
-    if (fill_compiled_file(fd, av[1], &pars_i) == ERR)
+    if (fill_compiled_file(fd, av[1], &pars_i) == ERR) {
+        remove(compiled_name);
+        close(fd);
         return ERR;
     close(fd);
+    }
     return SUCC;
 }
