@@ -122,6 +122,11 @@ static const struct handle_flags FLAGS[] = {
 
 int handle_flags(struct champion *result, char **av, int *index)
 {
+    if (av[*index][0] != '-') {
+        result->address = 0;
+        result->nb = 0;
+        return 1;
+    }
     for (int i = 0; i != FLAGS_NUMBER; ++i) {
         if (my_strcmp(av[*index], FLAGS[i].flag) == 0) {
             FLAGS[i].func (result, my_getnbr(av[*index + 1]));
@@ -148,20 +153,19 @@ int decriptage(char const *filepath, uint8_t *arene)
     return 0;
 }
 
-int read_champions(struct champion *result, int champions_nbr,
+int fill_champion(struct champion *result, int champions_nbr,
     int *index, const char *av[])
 {
-    int fd = open(av[*index], O_RDONLY);
+    result->filepath = av[*index];
+    int fd = open(result->filepath, O_RDONLY);
     UNUSED int little = 0;
-    header_t header;
 
     if (fd == -1)
         return -1;
-    read(fd, &header, sizeof(header_t));
-    if (my_swapb(header.magic) != COREWAR_EXEC_MAGIC) {
-        printf("magic = %i\nfilepath = %s\n", my_swapb(header.magic), av[*index]);
+    if (read(fd, &result[champions_nbr - 1].h, sizeof(header_t)) == -1)
         return -1;
-    }
+    // if (my_swapb(header.magic) != COREWAR_EXEC_MAGIC)
+    //     return -1;
     // little = my_bswap(header.prog_size);
     //     return -1;
     *index += 1;
@@ -180,15 +184,12 @@ struct champion *get_all_champions(int ac, const char *av[])
         result = realloc(result, sizeof(struct champion) * champions_nbr);
         if (result == NULL)
             return NULL;
-        if (my_strcmp(av[i], "-dump") == 0) {
+        if (my_strcmp(av[i], "-dump") == 0)
             i += 2;
-            printf("hello\n");
-        }
-        if (av[i][0] == '-') {
-            if (handle_flags(result + (champions_nbr - 1), (char **)av, &i) == ERR)
-                    return NULL;
-        } else
-            if (read_champions(result, champions_nbr, &i, av) == -1)
+        if (handle_flags(result + (champions_nbr - 1), (char **)av, &i) == ERR)
+            return NULL;
+        else
+            if (fill_champion(result, champions_nbr, &i, av) == ERR)
                 return NULL;
     }
     return result;
@@ -200,8 +201,8 @@ int corewar(int ac, const char *av[])
     
     if (champions == NULL)
         return ERR;
-    printf("%i\n", champions->nb);
-    printf("%i\n", champions[1].nb);
+    printf("--\n%s\nnb = %i\naddress = %i\n--\n", champions->h.prog_name, champions->nb, champions->address);
+    printf("%s\nnb = %i\naddress = %i\n--\n", champions[1].h.prog_name, champions[1].nb, champions[1].address);
     return 0;
 }
 
