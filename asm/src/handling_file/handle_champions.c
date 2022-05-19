@@ -19,7 +19,6 @@ static int call_check_function(
     struct instruction *instruction)
 {
     char **array = my_str_to_word_array(command, " ,\t\n");
-    int return_value = 0;
     int array_offset = 1;
 
     if (array == NULL)
@@ -30,12 +29,10 @@ static int call_check_function(
         ++i) {
         if (my_strcmp(array[array_offset - 1], INSTRUCTION_TAB[i].instruction)
             == 0)
-            return_value = INSTRUCTION_TAB[i].function(instruction,
+            return INSTRUCTION_TAB[i].function(instruction,
                 array + array_offset, compile_filed_fd);
-        if (return_value == ERR)
-            return ERR;
     }
-    return SUCC;
+    return ERR;
 }
 
 int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
@@ -54,8 +51,9 @@ int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
             (i + 1) * sizeof(struct instruction));
         if (toolbox.instructions == NULL)
             return ERR;
-        call_check_function(compile_filed_fd, line,
-            &toolbox.instructions[i]);
+        if (call_check_function(compile_filed_fd, line,
+            &toolbox.instructions[i]) == ERR)
+            return ERR;
         label_handling(&toolbox, line, i, &pos);
         ++i;
     }
