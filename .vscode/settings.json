@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "*.c": "c",
+        ".editorconfig": "c",
+        "op.h": "c",
+        "corewar.h": "c",
+        "my.h": "c",
+        "virtual_machine.h": "c",
+        "string.h": "c",
+        "cassert": "c",
+        "unistd.h": "c",
+        "stdlib.h": "c"
+    }
+}
