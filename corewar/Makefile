@@ -12,6 +12,7 @@ SRC			=	$(addsuffix .c,				\
 					handle_flags			\
 					corewar					\
 					error_handling 			\
+					get_instruction			\
 					instructions))			\
 
 SRC_TEST	=	$(addsuffix .c,				\

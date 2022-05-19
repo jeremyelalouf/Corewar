@@ -5,7 +5,22 @@
 ** my_bswap
 */
 
-int my_bswap(int value)
+#include <stddef.h>
+#include <stdint.h>
+
+void my_bswap(void *value, size_t size)
+{
+    uint8_t *tmp = (uint8_t *) value;
+    uint8_t c;
+
+    for (size_t i = 0; i < size / 2; i++) {
+        c = tmp[i];
+        tmp[i] = tmp[size - i - 1];
+        tmp[size - i - 1] = c;
+    }
+}
+
+int my_int_bswap(int value)
 {
     int converted = 0;
 
@@ -16,7 +31,7 @@ int my_bswap(int value)
     return converted;
 }
 
-int my_swapb(int value)
+int my_int_swapb(int value)
 {
     int converted = 0;
 

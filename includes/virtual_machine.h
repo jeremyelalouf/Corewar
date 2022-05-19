@@ -31,4 +31,6 @@ int corewar(int ac, const char *av[]);
 int handle_flags(struct champion *result, char **av, int *index);
 int error_handling(int ac, char const *av[]);
 
+int get_param_instruction(int *i, struct instruction *instruction,
+    uint8_t *arena);
 #endif/* !VM_H */
