@@ -29,8 +29,7 @@ int write_labels(int compile_filed_fd, struct toolbox *toolbox,
         return_value = label_is_good(&toolbox->labels,
             &toolbox->labels.call[i]);
         if (return_value != 0) {
-            if (toolbox->labels.call[i].size_to_write == 2)
-                tmp = return_value - toolbox->labels.call[i].label_pos;
+            tmp = return_value - toolbox->labels.call[i].label_pos;
             my_bswap(&tmp, toolbox->labels.call[i].size_to_write);
             lseek(compile_filed_fd, params_debute +
                 toolbox->labels.call[i].label_index +

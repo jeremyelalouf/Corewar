@@ -68,32 +68,28 @@ static int handle_to_fill_header(header_t *header, char *line,
     return SUCC;
 }
 
-static int handle_comment(char *line, size_t size, FILE *old_file_fd)
+static void fill_magic(header_t *header)
 {
-    while (1) {
-        if (getline(&line, &size, old_file_fd) == ERR)
-            return ERR;
-        if (line[0] != '#')
-            break;
-    }
-    return SUCC;
+    header->magic = COREWAR_EXEC_MAGIC;
+    my_bswap(&header->magic, sizeof(header->magic));
+    header->prog_size = 0;
+    my_bswap(&header->prog_size, sizeof(header->prog_size));
 }
 
 int write_header(int compile_filed_fd, FILE *old_file_fd,
     struct pars_counter *pars_i, int *params_debute)
 {
-    char *line = NULL;
+    char *line = "#";
     size_t size = 0;
     header_t header = {0};
 
-    handle_comment(line, size, old_file_fd);
+    for (int i = 0; line[0] == '#'; ++i)
+        if (getline(&line, &size, old_file_fd) == ERR)
+            return ERR;
     ++pars_i->line;
     if (handle_to_fill_header(&header, line, pars_i) == ERR)
         return ERR;
-    header.magic = COREWAR_EXEC_MAGIC;
-    my_bswap(&header.magic, sizeof(header.magic));
-    header.prog_size = 0;
-    my_bswap(&header.prog_size, sizeof(header.prog_size));
+    fill_magic(&header);
     if (getline(&line, &size, old_file_fd) == ERR)
         return ERR;
     ++pars_i->line;

@@ -43,6 +43,7 @@ int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
     char *line = NULL;
     size_t size = 0;
     int i = 0;
+    int pos = 0;
     struct toolbox toolbox = {.instructions = NULL, .labels.call = NULL,
         .labels.call_size = 0, .labels.def = NULL, .labels.def_size = 0,};
 
@@ -55,7 +56,7 @@ int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
             return ERR;
         call_check_function(compile_filed_fd, line,
             &toolbox.instructions[i]);
-        label_handling(&toolbox, line, i);
+        label_handling(&toolbox, line, i, &pos);
         ++i;
     }
     write_labels(compile_filed_fd, &toolbox, params_debute);

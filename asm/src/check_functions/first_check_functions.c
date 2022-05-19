@@ -9,12 +9,6 @@
 #include "corewar.h"
 #include "op.h"
 
-static void print_byte_as_bits(char val)
-{
-    for (int i = 7; 0 <= i; i--)
-        printf("%c\n", (val & (1 << i)) ? '1' : '0');
-}
-
 int check_live(struct instruction *instruction, char **params, int fd)
 {
     instruction->instruction = 1;

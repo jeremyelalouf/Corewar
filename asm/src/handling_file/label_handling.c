@@ -70,11 +70,9 @@ static int handle_label(char *command, struct instruction *instruction,
     return SUCC;
 }
 
-void label_handling(struct toolbox *toolbox, char *line, int i)
+void label_handling(struct toolbox *toolbox, char *line, int i, int *pos)
 {
-    int pos = 0;
-
-        toolbox->instructions[i].index = pos;
-        handle_label(line, &toolbox->instructions[i], &toolbox->labels);
-        pos += get_instruction_size(&toolbox->instructions[i]);
+    toolbox->instructions[i].index = *pos;
+    handle_label(line, &toolbox->instructions[i], &toolbox->labels);
+    *pos += get_instruction_size(&toolbox->instructions[i]);
 }
