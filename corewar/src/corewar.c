@@ -62,6 +62,8 @@ struct champion *get_all_champions(int ac, const char *av[])
 
 int corewar(int ac, const char *av[])
 {
+    int cycle = 0;
+    int i = 0;
     struct champion *champions = get_all_champions(ac, av);
     UNUSED uint8_t *arene;
     
@@ -69,5 +71,11 @@ int corewar(int ac, const char *av[])
         return ERR;
     // printf("--\n%s\nnb = %i\naddress = %i\n--\n", champions->h.prog_name, champions->nb, champions->address);
     // printf("%s\nnb = %i\naddress = %i\n--\n", champions[1].h.prog_name, champions[1].nb, champions[1].address);
+    while (cycle != CYCLE_TO_DIE) {
+        while (champions[i].filepath != NULL) {
+            ++i;
+        }
+        ++cycle;
+    }
     return 0;
 }

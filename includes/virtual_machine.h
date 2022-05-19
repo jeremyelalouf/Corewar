@@ -33,4 +33,6 @@ int error_handling(int ac, char const *av[]);
 
 int get_param_instruction(int *i, struct instruction *instruction,
     uint8_t *arena);
+int get_size_type(uint8_t type_param);
+
 #endif/* !VM_H */
