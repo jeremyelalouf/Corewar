@@ -28,8 +28,10 @@ static uint8_t get_param_type(char *param)
     if (param[0] == '%') {
         if (param[1] == LABEL_CHAR)
             return (T_DIR);
-        if (is_size_param_valid(T_DIR, param) == TRUE)
+        else
             return (T_DIR);
+        // if (is_size_param_valid(T_DIR, param) == TRUE)
+        //     return (T_DIR);
         return (ERR_UNSIGNED);
     }
     if (param[0] == LABEL_CHAR)
