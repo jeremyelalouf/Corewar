@@ -76,6 +76,8 @@ void print_syntax(struct pars_counter *pars_i);
 
 void print_no_name(struct pars_counter *pars_i);
 
+void label_handling(struct toolbox *toolbox, char *line, int i, int *pos);
+
 int fill_params_array(struct instruction *instruction, char **params);
 
 uint8_t create_coding_byte(int instruction, char **param);
@@ -86,6 +88,13 @@ int get_parameters_size(struct instruction *instruction);
 
 int write_champions(int compile_filed_fd, FILE *old_file_fd,
     int params_debute);
+
+int write_labels(int compile_filed_fd, struct toolbox *toolbox,
+    int params_debute);
+
+int has_coding_byte(uint8_t instruction);
+
+int sec_has_coding_byte(uint8_t instruction);
 
 int write_header(int compile_filed_fd, FILE *old_file_fd,
     struct pars_counter *pars_i, int *params_debute);
