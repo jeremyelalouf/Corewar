@@ -8,6 +8,7 @@
 #ifndef VM_H
     #define VM_H
     #include <stdint.h>
+    #include "corewar.h"
 
 void live(uint8_t *arene);
 void ld(uint8_t *arene);
@@ -25,6 +26,9 @@ void lld(uint8_t *arene);
 void lldi(uint8_t *arene);
 void lfork(uint8_t *arene);
 void aff(uint8_t *arene);
+
+int corewar(int ac, const char *av[]);
+int handle_flags(struct champion *result, char **av, int *index);
 int error_handling(int ac, char const *av[]);
 
 #endif/* !VM_H */

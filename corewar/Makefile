@@ -9,8 +9,10 @@ MAIN		=	./src/main.c				\
 
 SRC			=	$(addsuffix .c,				\
 				$(addprefix src/,			\
-					error_handling \
-					instructions))		\
+					handle_flags			\
+					corewar					\
+					error_handling 			\
+					instructions))			\
 
 SRC_TEST	=	$(addsuffix .c,				\
 				$(addprefix tests/,			\
