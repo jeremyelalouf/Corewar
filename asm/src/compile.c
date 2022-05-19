@@ -20,7 +20,8 @@ static int fill_compiled_file(int compile_filed_fd, const char *filepath,
 
     if (old_file_fd == NULL)
         return ERR;
-    if (write_header(compile_filed_fd, old_file_fd, pars_i, &params_debute) == ERR)
+    if (write_header(compile_filed_fd, old_file_fd, pars_i, &params_debute)
+        == ERR)
         return ERR;
     if (write_champions(compile_filed_fd, old_file_fd, params_debute) == ERR)
         return ERR;
