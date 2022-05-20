@@ -5,7 +5,10 @@
 ** get_instruction
 */
 
+#include <stdlib.h>
+
 #include "corewar.h"
+#include "virtual_machine.h"
 #include "my.h"
 
 static uint32_t get_param(int param_size, uint8_t *arena)

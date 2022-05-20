@@ -21,6 +21,7 @@
 int fill_champion(struct champion *result, int champions_nbr,
     int *index, const char *av[])
 {
+    result->actual_cycle = 0;
     result->filepath = av[*index];
     int fd = open(result->filepath, O_RDONLY);
     UNUSED int little = 0;
@@ -29,20 +30,23 @@ int fill_champion(struct champion *result, int champions_nbr,
         return -1;
     if (read(fd, &result[champions_nbr - 1].h, sizeof(header_t)) == -1)
         return -1;
-    // if (my_swapb(header.magic) != COREWAR_EXEC_MAGIC)
-    //     return -1;
-    // little = my_bswap(header.prog_size);
+    // if (result[champions_nbr - 1].h.magic != COREWAR_EXEC_MAGIC)
     //     return -1;
     *index += 1;
     close(fd);
     return 0;
 }
 
+// void get_dump(char const *av[], int *index, int champions_nbr, int *check)
+// {
+// }
+
 struct champion *get_all_champions(int ac, const char *av[])
 {
     struct champion *result = NULL;
     int champions_nbr = 0;
     int i = 1;
+    int check = 0;
 
     while (i < ac) {
         ++champions_nbr;
@@ -51,11 +55,16 @@ struct champion *get_all_champions(int ac, const char *av[])
             return NULL;
         if (my_strcmp(av[i], "-dump") == 0)
             i += 2;
-        if (handle_flags(result + (champions_nbr - 1), (char **)av, &i) == ERR)
+            // if (get_dump(av, &i, champions_nbr, &check) == ERR) {
+                // my_putsterr("trop de dump");
+            // };
+        if (handle_flags(result + (champions_nbr - 1), (char **)av, &i) == ERR) {
             return NULL;
-        else
-            if (fill_champion(result, champions_nbr, &i, av) == ERR)
+        } else
+            if (fill_champion(result, champions_nbr, &i, av) == ERR) {
+                printf("hello\n%s\n", av[i]);
                 return NULL;
+            }
     }
     return result;
 }

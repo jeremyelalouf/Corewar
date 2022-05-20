@@ -38,7 +38,7 @@ int handle_flags(struct champion *result, char **av, int *index)
     if (av[*index][0] != '-') {
         result->address = 0;
         result->nb = 0;
-        return 1;
+        return SUCC;
     }
     for (int i = 0; i != FLAGS_NUMBER; ++i) {
         if (my_strcmp(av[*index], FLAGS[i].flag) == 0) {
