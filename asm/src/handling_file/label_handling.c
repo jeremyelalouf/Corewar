@@ -77,7 +77,8 @@ int label_handling(struct toolbox *toolbox, char *line, int i, int *pos)
     int return_value = 0;
 
     toolbox->instructions[i].index = *pos;
-    return_value = handle_label(line, &toolbox->instructions[i], &toolbox->labels);
+    return_value = handle_label(line, &toolbox->instructions[i],
+        &toolbox->labels);
     *pos += get_instruction_size(&toolbox->instructions[i]);
     return return_value;
 }

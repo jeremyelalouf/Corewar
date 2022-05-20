@@ -13,7 +13,7 @@ ASM_PATH		=	./asm/
 
 COREWAR_PATH	=	./corewar/
 
-all: 	$(NAME)
+all:	$(NAME)
 
 $(NAME):
 	$(MAKE) -C $(ASM_PATH)
@@ -27,7 +27,7 @@ fclean: clean
 	$(MAKE) fclean -C $(ASM_PATH)
 	$(MAKE) fclean -C $(COREWAR_PATH)
 
-re:	
+re:
 	$(MAKE) fclean
 	$(MAKE) all
 

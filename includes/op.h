@@ -19,6 +19,7 @@
     #define NAME_CMD_STRING ".name"
     #define COMMENT_CMD_STRING ".comment"
     #define REG_NUMBER 16
+    #define CODING_BYTE_IND 3
     #define T_REG 1
     #define T_DIR 2
     #define T_IND 4
