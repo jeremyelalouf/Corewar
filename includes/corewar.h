@@ -108,4 +108,8 @@ void write_register(int fd, union type *params);
 
 int write_instruction(int fd, struct instruction *instruction);
 
+void fill_magic(header_t *header);
+
+int handle_comment(char **line, size_t *size, FILE *old_file_fd);
+
 #endif /* !PROJECT_H_ */

@@ -24,6 +24,7 @@ SRC			=	$(addsuffix .c,					\
 				write_label						\
 				get_new_file_name				\
 				handle_champions				\
+				handle_header_assets			\
 				handle_header)					\
 				print_error						\
 				error_handling					\

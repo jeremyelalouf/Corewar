@@ -35,28 +35,37 @@ static int call_check_function(
     return ERR;
 }
 
-int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
+static int write_champions_loop(struct toolbox *toolbox, int compile_filed_fd,
+    FILE *old_file_fd)
 {
     char *line = NULL;
     size_t size = 0;
     int i = 0;
     int pos = 0;
-    struct toolbox toolbox = {.instructions = NULL, .labels.call = NULL,
-        .labels.call_size = 0, .labels.def = NULL, .labels.def_size = 0,};
 
     while (getline(&line, &size, old_file_fd) != -1) {
         if (my_strlen(line) < 2)
             continue;
-        toolbox.instructions = realloc(toolbox.instructions,
+        toolbox->instructions = realloc(toolbox->instructions,
             (i + 1) * sizeof(struct instruction));
-        if (toolbox.instructions == NULL)
+        if (toolbox->instructions == NULL)
             return ERR;
         if (call_check_function(compile_filed_fd, line,
-            &toolbox.instructions[i]) == ERR)
+            &toolbox->instructions[i]) == ERR)
             return ERR;
-        label_handling(&toolbox, line, i, &pos);
+        label_handling(toolbox, line, i, &pos);
         ++i;
     }
+    return SUCC;
+}
+
+int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
+{
+    struct toolbox toolbox = {.instructions = NULL, .labels.call = NULL,
+        .labels.call_size = 0, .labels.def = NULL, .labels.def_size = 0,};
+
+    if (write_champions_loop(&toolbox, compile_filed_fd, old_file_fd) == ERR)
+        return ERR;
     write_labels(compile_filed_fd, &toolbox, params_debute);
     return SUCC;
 }
