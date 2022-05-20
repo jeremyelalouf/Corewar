@@ -12,6 +12,7 @@
     #include "op.h"
     #define MAX_FOUR_BYTES_VAL  "2147483647"
     #define MAX_TWO_BYTES_VAL   "32767"
+    #define TMP_COREWAR_FILE    "/tmp/corewar.tmp"
     #define NBR_OF_INSTRUCTION  16
     #define ERR_UNSIGNED    0
     #define VAL_IND 3

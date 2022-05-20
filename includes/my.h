@@ -11,7 +11,7 @@
     #define ATOD(x)     (x - '@')
     #define DTOA(x)     (x + '0')
     #define ADTOD(x)    (x - '0')
-    #define UNUSED         __attribute__((unused))
+    #define UNUSED  __attribute__((unused))
     #define EXIT_ERR    84
     #define FALSE       0
     #define TRUE        1

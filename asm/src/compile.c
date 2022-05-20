@@ -28,6 +28,29 @@ static int fill_compiled_file(int compile_filed_fd, const char *filepath,
     return SUCC;
 }
 
+int copy_in_real_file(char *compiled_name, int fd)
+{
+    int real_fd = open(compiled_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
+    int i = 0;
+    ssize_t rd;
+    ssize_t wr;
+    char buffer[256];
+
+    if (real_fd == -1)
+        return ERR;
+    lseek(fd, 0, SEEK_SET);
+    do {
+        rd = read(fd, buffer, sizeof(buffer));
+        if (rd == ERR)
+            return ERR;
+        wr = write(real_fd, buffer, rd);
+        if (wr == ERR)
+            return ERR;
+    } while (rd == sizeof(buffer));
+    close(real_fd);
+    return SUCC;
+}
+
 int compile(char *av[])
 {
     struct pars_counter pars_i = {
@@ -38,13 +61,14 @@ int compile(char *av[])
 
     if (compiled_name == NULL)
         return ERR;
-    fd = open(compiled_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
+    fd = open(TMP_COREWAR_FILE, O_CREAT | O_RDWR | O_TRUNC, 0666);
     if (fd == -1)
         return ERR;
     if (fill_compiled_file(fd, av[1], &pars_i) == ERR) {
         close(fd);
         return ERR;
     }
+    copy_in_real_file(compiled_name, fd);
     close(fd);
     return SUCC;
 }
