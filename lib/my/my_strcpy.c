@@ -5,7 +5,7 @@
 ** my_strcpy
 */
 
-char * my_strcpy(char *dest, const char *src)
+char *my_strcpy(char *dest, const char *src)
 {
     int i = 0;
 

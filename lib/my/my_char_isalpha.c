@@ -8,5 +8,5 @@
 int my_char_isalpha(const char letter)
 {
     return ((letter >= 'A' && letter <= 'Z') ||
-    (letter >= 'a' && letter <= 'z'));
+        (letter >= 'a' && letter <= 'z'));
 }

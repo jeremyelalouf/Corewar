@@ -42,10 +42,9 @@ int compile(char *av[])
     if (fd == -1)
         return ERR;
     if (fill_compiled_file(fd, av[1], &pars_i) == ERR) {
-        remove(compiled_name);
         close(fd);
         return ERR;
-    close(fd);
     }
+    close(fd);
     return SUCC;
 }

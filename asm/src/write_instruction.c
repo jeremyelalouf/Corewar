@@ -12,9 +12,9 @@
 #include "my.h"
 
 static const write_function_t TAB_WRITE_FUNCTION[] = {
-    { REG_BYTE_SIZE, &write_register },
-    { DIR_SIZE, &write_direct },
-    { IND_SIZE, &write_indirect },
+    {REG_BYTE_SIZE, &write_register},
+    {DIR_SIZE, &write_direct},
+    {IND_SIZE, &write_indirect},
 };
 
 void write_register(int fd, union type *params)

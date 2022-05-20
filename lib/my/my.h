@@ -11,7 +11,7 @@
     #define ATOD(x)     (x - '@')
     #define DTOA(x)     (x + '0')
     #define ADTOD(x)    (x - '0')
-    #define UNUSED         __attribute__((unused))
+    #define UNUSED  __attribute__((unused))
     #define EXIT_ERR    84
     #define FALSE       0
     #define TRUE        1
@@ -133,8 +133,6 @@ int my_tablen(char *[]);
 int len_cmp(char *, char *);
 
 int my_strlen(const char *);
-
-// 
 
 void my_bswap(void *value, size_t size);
 

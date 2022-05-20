@@ -134,8 +134,6 @@ int len_cmp(char *, char *);
 
 int my_strlen(const char *);
 
-// 
-
 void my_bswap(void *value, size_t size);
 
 void my_swap(int *, int *);

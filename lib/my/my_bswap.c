@@ -12,7 +12,7 @@
 
 void my_bswap(void *value, size_t size)
 {
-    uint8_t *tmp = (uint8_t *) value;
+    uint8_t *tmp = (uint8_t *)value;
     uint8_t c;
 
     for (size_t i = 0; i < size / 2; i++) {
