@@ -8,7 +8,7 @@
 #include "my.h"
 #include "corewar.h"
 
-int main(int argc, char *argv[])
+int main(int argc, char const *argv[])
 {
     if (error_handling(argc, argv) == ERR)
         return EXIT_ERR;

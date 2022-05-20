@@ -7,7 +7,7 @@
 
 #include "my.h"
 
-int error_handling(int ac, char *av[])
+int error_handling(int ac, UNUSED char const *av[])
 {
     if (ac < 1)
         return ERR;
