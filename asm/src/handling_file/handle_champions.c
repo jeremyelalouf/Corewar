@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <stddef.h>
 
 #include "my.h"
 #include "corewar.h"
@@ -56,16 +57,40 @@ static int write_champions_loop(struct toolbox *toolbox, int compile_filed_fd,
         label_handling(toolbox, line, i, &pos);
         ++i;
     }
-    return SUCC;
+    return i;
+}
+
+int write_prog_size(int compile_filed_fd, struct toolbox *toolbox,
+    int nbr_instruction)
+{
+    int prog_size = 0;
+
+    for (int i = 0; i != nbr_instruction; ++i) {
+        for (int count = 0; count != get_parameters_size(
+            &toolbox->instructions[i]); ++count) {
+                prog_size += toolbox->instructions[i].params[count].size;
+        }
+        prog_size += 2;
+        if (has_coding_byte(toolbox->instructions[i].instruction) == 0)
+            --prog_size;
+    }
+    my_bswap(&prog_size, sizeof(uint8_t));
+    lseek(compile_filed_fd, offsetof(header_t, prog_size) +
+        sizeof(int) - sizeof(uint8_t), SEEK_SET);
+    write(compile_filed_fd, &prog_size, sizeof(uint8_t));
 }
 
 int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
 {
+    int return_value = 0;
     struct toolbox toolbox = {.instructions = NULL, .labels.call = NULL,
         .labels.call_size = 0, .labels.def = NULL, .labels.def_size = 0,};
 
-    if (write_champions_loop(&toolbox, compile_filed_fd, old_file_fd) == ERR)
+    return_value = write_champions_loop(&toolbox, compile_filed_fd,
+        old_file_fd);
+    if (return_value == ERR)
         return ERR;
     write_labels(compile_filed_fd, &toolbox, params_debute);
+    write_prog_size(compile_filed_fd, &toolbox, return_value);
     return SUCC;
 }
