@@ -61,6 +61,8 @@ static int handle_label(char *command, struct instruction *instruction,
 
     if (array == NULL)
         return ERR;
+    if (my_tablen(array) == 1)
+        return 1;
     if (handle_label_declaration(&array, instruction, labels) == ERR)
         return ERR;
     for (int i = 0; array[i] != NULL; ++i) {
@@ -70,9 +72,12 @@ static int handle_label(char *command, struct instruction *instruction,
     return SUCC;
 }
 
-void label_handling(struct toolbox *toolbox, char *line, int i, int *pos)
+int label_handling(struct toolbox *toolbox, char *line, int i, int *pos)
 {
+    int return_value = 0;
+
     toolbox->instructions[i].index = *pos;
-    handle_label(line, &toolbox->instructions[i], &toolbox->labels);
+    return_value = handle_label(line, &toolbox->instructions[i], &toolbox->labels);
     *pos += get_instruction_size(&toolbox->instructions[i]);
+    return return_value;
 }

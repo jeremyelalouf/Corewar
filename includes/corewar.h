@@ -77,7 +77,7 @@ void print_syntax(struct pars_counter *pars_i);
 
 void print_no_name(struct pars_counter *pars_i);
 
-void label_handling(struct toolbox *toolbox, char *line, int i, int *pos);
+int label_handling(struct toolbox *toolbox, char *line, int i, int *pos);
 
 int fill_params_array(struct instruction *instruction, char **params);
 

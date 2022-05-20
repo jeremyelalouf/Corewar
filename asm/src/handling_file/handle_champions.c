@@ -60,7 +60,7 @@ static int write_champions_loop(struct toolbox *toolbox, int compile_filed_fd,
     return i;
 }
 
-int write_prog_size(int compile_filed_fd, struct toolbox *toolbox,
+static int write_prog_size(int compile_filed_fd, struct toolbox *toolbox,
     int nbr_instruction)
 {
     int prog_size = 0;
@@ -84,7 +84,7 @@ int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
 {
     int return_value = 0;
     struct toolbox toolbox = {.instructions = NULL, .labels.call = NULL,
-        .labels.call_size = 0, .labels.def = NULL, .labels.def_size = 0,};
+        .labels.call_size = 0, .labels.def = NULL, .labels.def_size = 0};
 
     return_value = write_champions_loop(&toolbox, compile_filed_fd,
         old_file_fd);
