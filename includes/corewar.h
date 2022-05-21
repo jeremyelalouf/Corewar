@@ -37,11 +37,15 @@ struct instruction {
 };
 
 struct champion {
+    int carry;
+    int is_dead;
+    int nbr_cycle_last_live;
     int actual_cycle;
     int nb;
     const char *filepath;
     int address;
     struct instruction *i;
+    uint32_t registers[REG_NUMBER];
     header_t h;
 };
 
