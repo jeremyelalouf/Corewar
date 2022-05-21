@@ -28,13 +28,23 @@ static int is_param_index(int index_param, struct instruction *instruction)
         param_type));
 }
 
+static void fill_index(char **params, struct instruction *instruction, int i)
+{
+    if (params[i][0] == DIRECT_CHAR || params[i][0] == 'r')
+        instruction->params[i].types.indirect = my_getnbr((params[i]) + 1);
+    else if (params[i][1] == LABEL_CHAR)
+        instruction->params[i].types.indirect = my_getnbr((params[i]) + 2);
+    else
+        instruction->params[i].types.indirect = my_getnbr((params[i]));
+}
+
 int fill_params_array(struct instruction *instruction, char **params)
 {
     int params_nbr = get_parameters_size(instruction);
 
     for (int i = 0; i != params_nbr; ++i) {
         if (is_param_index(i, instruction) == TRUE) {
-            instruction->params[i].types.indirect = my_getnbr((params[i]) + 1);
+            fill_index(params, instruction, i);
             continue;
         }
         if (instruction->params[i].size == IND_SIZE)
