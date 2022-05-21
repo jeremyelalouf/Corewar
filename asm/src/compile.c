@@ -31,7 +31,6 @@ static int fill_compiled_file(int compile_filed_fd, const char *filepath,
 static int copy_in_real_file(char *compiled_name, int fd)
 {
     int real_fd = open(compiled_name, O_CREAT | O_RDWR | O_TRUNC, 0666);
-    int i = 0;
     ssize_t rd;
     ssize_t wr;
     char buffer[256];

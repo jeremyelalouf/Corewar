@@ -36,7 +36,8 @@ int write_labels(int compile_filed_fd, struct toolbox *toolbox,
                 toolbox->labels.call[i].label_pos, SEEK_SET);
             write(compile_filed_fd, &tmp,
                 toolbox->labels.call[i].size_to_write);
-        }
+        } else
+            return ERR;
     }
     return SUCC;
 }
