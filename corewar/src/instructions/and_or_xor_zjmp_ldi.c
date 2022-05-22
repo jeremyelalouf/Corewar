@@ -8,7 +8,7 @@
 #include "corewar.h"
 #include "virtual_machine.h"
 
-void my_and(struct champion *c, uint8_t *arena,
+int my_and(struct champion *c, uint8_t *arena,
     UNUSED struct champion *fork_param)
 {
     int param1 = 0;
@@ -27,13 +27,11 @@ void my_and(struct champion *c, uint8_t *arena,
         }
     }
     c->registers[(c->i->params[2].types.reg - 1)] = param1 & param2;
-    if (c->registers[(c->i->params[2].types.reg - 1)] == 0)
-        c->carry = 0;
-    else
-        c->carry = 1;
+    c->carry = c->registers[(c->i->params[2].types.reg - 1)] == 0 ? 0 : 1;
+    return (SUCC);
 }
 
-void my_or(struct champion *c, uint8_t *arena,
+int my_or(struct champion *c, uint8_t *arena,
     UNUSED struct champion *fork_param)
 {
     int param1 = 0;
@@ -52,12 +50,11 @@ void my_or(struct champion *c, uint8_t *arena,
         }
     }
     c->registers[(c->i->params[2].types.reg - 1)] = param1 | param2;
-    if (c->registers[(c->i->params[2].types.reg - 1)] == 0)
-        c->carry = 0;
-    else
-        c->carry = 1;}
+    c->carry = c->registers[(c->i->params[2].types.reg - 1)] == 0 ? 0 : 1;
+    return (SUCC);
+}
 
-void my_xor(struct champion *c, uint8_t *arena,
+int my_xor(struct champion *c, uint8_t *arena,
     UNUSED struct champion *fork_param)
 {
     int param1 = 0;
@@ -76,20 +73,20 @@ void my_xor(struct champion *c, uint8_t *arena,
         }
     }
     c->registers[(c->i->params[2].types.reg - 1)] = param1 ^ param2;
-    if (c->registers[(c->i->params[2].types.reg - 1)] == 0)
-        c->carry = 0;
-    else
-        c->carry = 1;}
+    c->carry = c->registers[(c->i->params[2].types.reg - 1)] == 0 ? 0 : 1;
+    return (SUCC);
+}
 
-void zjmp(struct champion *c, UNUSED uint8_t *arena,
+int zjmp(struct champion *c, UNUSED uint8_t *arena,
     UNUSED struct champion *fork_param)
 {
     if (c->carry == 0)
-        return;
+        return (SUCC);
     c->address += c->i->params[0].types.indirect % IDX_MOD;
+    return (SUCC);
 }
 
-void ldi(struct champion *c, uint8_t *arena,
+int ldi(struct champion *c, uint8_t *arena,
     UNUSED struct champion *fork_param)
 {
     int s = get_n_byte_val(IND_SIZE, (c->address +
@@ -97,8 +94,6 @@ void ldi(struct champion *c, uint8_t *arena,
 
     c->registers[(c->i->params[2].types.reg - 1)] =
         get_n_byte_val(REG_SIZE, (c->address + s % IDX_MOD), arena);
-    if (c->registers[(c->i->params[2].types.reg - 1)] == 0)
-        c->carry = 0;
-    else
-        c->carry = 1;
+    c->carry = c->registers[(c->i->params[2].types.reg - 1)] == 0 ? 0 : 1;
+    return (SUCC);
 }

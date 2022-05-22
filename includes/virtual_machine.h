@@ -10,7 +10,7 @@
     #include <stdint.h>
     #include "corewar.h"
 
-typedef void instruction_fun_t(struct champion * c, uint8_t *arena,
+typedef int instruction_fun_t(struct champion * c, uint8_t *arena,
     struct champion *fork_param);
 
 instruction_fun_t live;
@@ -96,6 +96,9 @@ int verify_coding_byte(struct instruction *instruction);
 int get_size_type(uint8_t type_param);
 uint32_t get_n_byte_val(int n, int address, uint8_t *arena);
 uint8_t get_type_param(int param_pos, uint8_t coding_byte);
+
+void copy_champion_fork(int real_address_fork, int real_address_c,
+    struct champion *c, uint8_t *arena);
 
 int is_game_win_or_lose(int nbr_champions, int nbr_dead_champions,
     struct champion *champions);

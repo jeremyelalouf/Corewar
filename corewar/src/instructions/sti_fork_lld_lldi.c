@@ -26,7 +26,7 @@ static void copy_reg_size_val(int address, uint32_t val, uint8_t *arena)
     }
 }
 
-void sti(struct champion *c, uint8_t *arena,
+int sti(struct champion *c, uint8_t *arena,
     UNUSED struct champion *fork_param)
 {
     int param1 = 0;
@@ -46,9 +46,10 @@ void sti(struct champion *c, uint8_t *arena,
     }
     copy_reg_size_val((c->address + (param1 + param2) % IDX_MOD),
         c->registers[(c->i->params[0].types.reg - 1)], arena);
+    return (SUCC);
 }
 
-void my_fork(struct champion *c, uint8_t *arena, struct champion *fork_param)
+int my_fork(struct champion *c, uint8_t *arena, struct champion *fork_param)
 {
     int i = 0;
     int real_address_c = c->address + IND_SIZE + 1;
@@ -58,33 +59,27 @@ void my_fork(struct champion *c, uint8_t *arena, struct champion *fork_param)
     while (fork_param->filepath != NULL)
         ++i;
     fork_param = realloc(fork_param, i + 2);
+    if (fork_param == NULL)
+        return (ERR);
     fork_param[i] = *c;
     fork_param[i].address = real_address_fork;
     fork_param[i].h.prog_size = c->h.prog_size - (c->address + IND_SIZE + 1);
-    for (int j = 0; j < (c->h.prog_size - (c->address + IND_SIZE + 1)); ++j) {
-        arena[real_address_fork] = arena[real_address_c];
-        ++real_address_c;
-        ++real_address_fork;
-        if (real_address_c >= MEM_SIZE)
-            real_address_c = 0;
-        if (real_address_fork >= MEM_SIZE)
-            real_address_fork = 0;
-    }
+    copy_champion_fork(real_address_fork, real_address_c, c, arena);
+    return (SUCC);
 }
 
-void lld(struct champion *c, uint8_t *arena,
+int lld(struct champion *c, uint8_t *arena,
     UNUSED struct champion *fork_param)
 {
     c->registers[(c->i->params[1].types.reg - 1)] =
         get_n_byte_val(REG_SIZE, (c->address + c->i->params[0].types.direct),
         arena);
 
-    if (c->registers[(c->i->params[1].types.reg - 1)] == 0)
-        c->carry = 0;
-    else
-        c->carry = 1;}
+    c->carry = c->registers[(c->i->params[1].types.reg - 1)] == 0 ? 0 : 1;
+    return (SUCC);
+}
 
-void lldi(struct champion *c, uint8_t *arena,
+int lldi(struct champion *c, uint8_t *arena,
     UNUSED struct champion *fork_param)
 {
     int s = get_n_byte_val(IND_SIZE, (c->address +
@@ -92,8 +87,6 @@ void lldi(struct champion *c, uint8_t *arena,
 
     c->registers[(c->i->params[2].types.reg - 1)] =
         get_n_byte_val(REG_SIZE, (c->address + s), arena);
-    if (c->registers[(c->i->params[2].types.reg - 1)] == 0)
-        c->carry = 0;
-    else
-        c->carry = 1;
+    c->carry = c->registers[(c->i->params[2].types.reg - 1)] == 0 ? 0 : 1;
+    return (SUCC);
 }
