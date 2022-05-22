@@ -12,7 +12,7 @@ int my_str_isnum(const char *str)
     int a = 0;
 
     while (str[a] != '\0') {
-        if (str[a] < 48 || str[a] > 57)
+        if ((str[a] < 48 || str[a] > 57) && str[a] != '-')
             return SUCC;
         a++;
     }
