@@ -5,27 +5,28 @@
 ## makefile
 ##
 
-MAIN		=	./src/main.c				\
+MAIN		=	./src/main.c					\
 
-SRC			=	$(addsuffix .c,				\
-				$(addprefix src/,			\
-					handle_flags			\
-					corewar					\
-					error_handling 			\
-					get_instruction			\
-					get_size_type			\
-					handle_champion_action	\
-					is_game_win_or_lose		\
-					get_type_and_val		\
-				$(addprefix instructions/,	\
-				lfork_aff					\
-				live_ld_st_add_sub			\
-				sti_fork_lld_lldi			\
-				and_or_xor_zjmp_ldi)))		\
+SRC			=	$(addsuffix .c,					\
+				$(addprefix src/,				\
+					handle_flags				\
+					corewar						\
+					error_handling 				\
+					get_instruction				\
+					get_size_type				\
+					handle_champion_action		\
+					is_game_win_or_lose			\
+					get_type_and_val			\
+					error_handling_instruction	\
+				$(addprefix instructions/,		\
+				lfork_aff						\
+				live_ld_st_add_sub				\
+				sti_fork_lld_lldi				\
+				and_or_xor_zjmp_ldi)))			\
 
-SRC_TEST	=	$(addsuffix .c,				\
-				$(addprefix tests/,			\
-					test-project))			\
+SRC_TEST	=	$(addsuffix .c,					\
+				$(addprefix tests/,				\
+					test-project))				\
 
 OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 

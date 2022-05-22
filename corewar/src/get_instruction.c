@@ -68,22 +68,22 @@ static int *get_read_size(uint8_t instruction, uint8_t coding_byte)
 static int get_param_from_coding_byte(int *pos_in_arena,
     struct instruction *instruction, uint8_t *arena)
 {
-    int i = 0;
     int size = 0;
     int *param_size;
 
     instruction->coding_byte = arena[*pos_in_arena + 1];
+    if (verify_coding_byte(instruction) == ERR)
+        return (ERR);
     param_size = get_read_size(instruction->instruction,
         instruction->coding_byte);
     if (param_size == NULL)
         return (ERR);
-    while (i < 4 && param_size[i] != END_OF_TAB) {
+    for (int i = 0; i < 4 && param_size[i] != END_OF_TAB; ++i) {
         instruction->params[i].types.direct = get_param(param_size[i],
             &arena[*pos_in_arena + size + 1]);
         if (instruction->params[i].types.direct == ERR)
             return (ERR);
         size += param_size[i];
-        ++i;
     }
     free(param_size);
     return (size);

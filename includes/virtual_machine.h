@@ -92,6 +92,7 @@ int handle_champion_action(struct champion *champions,
 
 int get_param_instruction(int *i, struct instruction *instruction,
     uint8_t *arena);
+int verify_coding_byte(struct instruction *instruction);
 int get_size_type(uint8_t type_param);
 uint32_t get_n_byte_val(int n, int address, uint8_t *arena);
 uint8_t get_type_param(int param_pos, uint8_t coding_byte);
