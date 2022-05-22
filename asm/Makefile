@@ -19,8 +19,12 @@ SRC			=	$(addsuffix .c,					\
 				fill_params_array				\
 				coding_byte)					\
 				$(addprefix handling_file/,		\
+				has_coding_byte					\
+				label_handling					\
+				write_label						\
 				get_new_file_name				\
 				handle_champions				\
+				handle_header_assets			\
 				handle_header)					\
 				print_error						\
 				error_handling					\
@@ -30,7 +34,7 @@ SRC			=	$(addsuffix .c,					\
 
 SRC_TEST	=	$(addsuffix .c,					\
 				$(addprefix tests/,				\
-				test-project))					\
+				test_project))					\
 
 OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 
@@ -38,7 +42,7 @@ OBJ_TEST	=	$(SRC:.c=.o) $(SRC_TEST:.c=.o)
 
 CFLAGS		=	-Wall -Wextra
 
-CPPFLAGS 	+=	-I../includes
+CPPFLAGS	+=	-I../includes
 
 LDFLAGS		+=	-L../lib/my -lmy
 
@@ -52,7 +56,7 @@ LIBMY_PATH	=	../lib/my/libmy.a
 
 LIB_PATH	=	../lib/my
 
-all: 	$(NAME)
+all:	$(NAME)
 
 $(LIBMY_PATH):
 	$(MAKE) -C $(LIB_PATH)
@@ -76,7 +80,7 @@ fclean: clean
 	$(RM) $(NAME)
 	$(RM) $(TEST_NAME)
 
-re:	
+re:
 	$(MAKE) fclean
 	$(MAKE) all
 

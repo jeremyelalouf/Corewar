@@ -37,6 +37,9 @@ uint8_t *fill_arena(struct champion *champions)
 {
     uint8_t *arena = malloc(sizeof(uint8_t) * MEM_SIZE);
 
+    if (arena == NULL)
+        return (NULL);
+    return (arena);
 }
 
 int corewar(int ac, const char *av[])
@@ -45,7 +48,7 @@ int corewar(int ac, const char *av[])
     int nb_champions = 0;
     struct champion *champions =
         get_all_champions(ac, av, &dump, &nb_champions);
-    UNUSED uint8_t *arena = fill_arena();
+    uint8_t *arena = NULL;
 
     if (champions == NULL)
         return ERR;

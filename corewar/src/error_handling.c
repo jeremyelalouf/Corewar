@@ -5,19 +5,9 @@
 ** error_handling
 */
 
+#include "corewar.h"
+
 #include <stdlib.h>
-
-#include "my.h"
-#include "virtual_machine.h"
-
-int handly_error_nb_champions(int nb_champions)
-{
-    if (nb_champions > MAX_ARGS_NUMBER) {
-        my_putsterr("The number of champion load is above the limit.\n");
-        return -1;
-    }
-    return 0;
-}
 
 void display_usages(void)
 {

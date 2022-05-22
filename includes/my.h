@@ -11,8 +11,7 @@
     #define ATOD(x)     (x - '@')
     #define DTOA(x)     (x + '0')
     #define ADTOD(x)    (x - '0')
-    #define SIZEOF(x)   sizeof(x) / sizeof(*x)
-    #define UNUSED      __attribute__((unused))
+    #define UNUSED  __attribute__((unused))
     #define EXIT_ERR    84
     #define FALSE       0
     #define TRUE        1
@@ -138,8 +137,6 @@ int my_strlen(const char *);
 // 
 
 void my_bswap(void *value, size_t size);
-
-int my_int_bswap(int value);
 
 int my_int_swapb(int value);
 

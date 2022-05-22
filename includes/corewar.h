@@ -18,6 +18,7 @@
     #define REG_BYTE_SIZE       1
     #define END_OF_TAB          -1
     #define FLAGS_NUMBER        2
+    #define TMP_COREWAR_FILE    "/tmp/corewar.tmp"
 
 union type {
     uint32_t direct;
@@ -34,6 +35,7 @@ struct instruction {
     uint8_t instruction;
     uint8_t coding_byte;
     struct arg params[MAX_ARGS_NUMBER];
+    int index;
 };
 
 struct champion {
@@ -49,17 +51,23 @@ struct champion {
     int address;
 };
 
-typedef struct label_s {
-    int *pos;
-    char **name;
-    int *call;
-    int label_nbr;
-    int call_nbr;
-} label_t;
+struct label {
+    char *label_name;
+    int label_pos;
+    int label_index;
+    int size_to_write;
+};
+
+struct label_referenced {
+    struct label *call;
+    int call_size;
+    struct label *def;
+    int def_size;
+};
 
 struct toolbox {
     struct instruction *instructions;
-    label_t labels;
+    struct label_referenced labels;
 };
 
 struct pars_counter {
@@ -91,6 +99,13 @@ void print_syntax(struct pars_counter *pars_i);
 
 void print_no_name(struct pars_counter *pars_i);
 
+int label_handling(struct toolbox *toolbox, char *line, int i, int *pos,
+    char **solo_label);
+
+int unusable_line(char *line);
+
+int there_is_solo_label(char *line, char **solo_label);
+
 int fill_params_array(struct instruction *instruction, char **params);
 
 uint8_t create_coding_byte(int instruction, char **param);
@@ -99,10 +114,18 @@ int is_size_param_valid(int type, char *param);
 
 int get_parameters_size(struct instruction *instruction);
 
-int write_champions(int compile_filed_fd, FILE *old_file_fd);
+int write_champions(int compile_filed_fd, FILE *old_file_fd,
+    int params_debute);
+
+int write_labels(int compile_filed_fd, struct toolbox *toolbox,
+    int params_debute);
+
+int has_coding_byte(uint8_t instruction);
+
+int sec_has_coding_byte(uint8_t instruction);
 
 int write_header(int compile_filed_fd, FILE *old_file_fd,
-    struct pars_counter *pars_i);
+    struct pars_counter *pars_i, int *params_debute);
 
 void write_indirect(int fd, union type *params);
 
@@ -111,5 +134,9 @@ void write_direct(int fd, union type *params);
 void write_register(int fd, union type *params);
 
 int write_instruction(int fd, struct instruction *instruction);
+
+void fill_magic(header_t *header);
+
+int handle_comment(char **line, size_t *size, FILE *old_file_fd);
 
 #endif /* !PROJECT_H_ */

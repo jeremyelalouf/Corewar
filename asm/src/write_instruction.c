@@ -12,37 +12,32 @@
 #include "my.h"
 
 static const write_function_t TAB_WRITE_FUNCTION[] = {
-    { REG_BYTE_SIZE, &write_register },
-    { DIR_SIZE, &write_direct },
-    { IND_SIZE, &write_indirect },
+    {REG_BYTE_SIZE, &write_register},
+    {DIR_SIZE, &write_direct},
+    {IND_SIZE, &write_indirect},
 };
 
 void write_register(int fd, union type *params)
 {
-    uint8_t big_endian = my_bswap(params->reg);
-
-    write(fd, &big_endian, REG_BYTE_SIZE);
+    write(fd, &params->reg, REG_BYTE_SIZE);
 }
 
 void write_direct(int fd, union type *params)
 {
-    uint32_t big_endian = my_bswap(params->direct);
-
-    write(fd, &big_endian, DIR_SIZE);
+    my_bswap(&params->direct, sizeof(params->direct));
+    write(fd, &params->direct, DIR_SIZE);
 }
 
 void write_indirect(int fd, union type *params)
 {
-    uint16_t big_endian = my_bswap(params->indirect);
-
-    write(fd, &big_endian, IND_SIZE);
+    my_bswap(&params->indirect, sizeof(params->indirect));
+    write(fd, &params->indirect, IND_SIZE);
 }
 
 static void call_write_of_param(int fd, int j, struct instruction *instruction)
 {
     for (int k = 0; k < 3; ++k) {
-        if (instruction->params[j].size ==
-        TAB_WRITE_FUNCTION[k].size) {
+        if (instruction->params[j].size == TAB_WRITE_FUNCTION[k].size) {
             TAB_WRITE_FUNCTION[k].fun_ptr(fd, &instruction->params[j].types);
             return;
         }

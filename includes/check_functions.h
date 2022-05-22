@@ -8,7 +8,7 @@
 #ifndef CHECK_FUNCTIONS_H_
     #define CHECK_FUNCTIONS_H_
 
-typedef int check_instruction_t (struct instruction *instruction,
+typedef int check_instruction_t(struct instruction *instruction,
     char **params, int fd);
 
 typedef struct check_tab_s {

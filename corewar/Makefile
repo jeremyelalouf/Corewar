@@ -37,7 +37,7 @@ OBJ_TEST	=	$(SRC:.c=.o) $(SRC_TEST:.c=.o)
 
 CFLAGS		=	-Wall -Wextra
 
-CPPFLAGS 	+=	-I../includes
+CPPFLAGS	+=	-I../includes
 
 LDFLAGS		+=	-L../lib/my -lmy
 
@@ -51,7 +51,7 @@ LIBMY_PATH	=	../lib/my/libmy.a
 
 LIB_PATH	=	../lib/my
 
-all: 	$(NAME)
+all:	$(NAME)
 
 $(LIBMY_PATH):
 	$(MAKE) -C $(LIB_PATH)
@@ -75,7 +75,7 @@ fclean: clean
 	$(RM) $(NAME)
 	$(RM) $(TEST_NAME)
 
-re:	
+re:
 	$(MAKE) fclean
 	$(MAKE) all
 
