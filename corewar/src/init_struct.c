@@ -7,7 +7,7 @@
 
 #include <stdlib.h>
 
-#include "../../includes/virtual_machine.h"
+#include "virtual_machine.h"
 
 struct champion *init_champions(struct champion *result)
 {
