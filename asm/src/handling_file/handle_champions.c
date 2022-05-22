@@ -64,7 +64,7 @@ static int write_champions_loop(struct toolbox *toolbox, int compile_filed_fd,
 static void write_prog_size(int compile_filed_fd, struct toolbox *toolbox,
     int nbr_instruction)
 {
-    int prog_size = 0;
+    short prog_size = 0;
 
     for (int i = 0; i != nbr_instruction; ++i) {
         for (int count = 0; count != get_parameters_size(
@@ -75,10 +75,10 @@ static void write_prog_size(int compile_filed_fd, struct toolbox *toolbox,
         if (has_coding_byte(toolbox->instructions[i].instruction) == 0)
             --prog_size;
     }
-    my_bswap(&prog_size, sizeof(uint8_t));
+    my_bswap(&prog_size, sizeof(short));
     lseek(compile_filed_fd, offsetof(header_t, prog_size) +
-        sizeof(int) - sizeof(uint8_t), SEEK_SET);
-    write(compile_filed_fd, &prog_size, sizeof(uint8_t));
+        sizeof(short), SEEK_SET);
+    write(compile_filed_fd, &prog_size, sizeof(short));
 }
 
 int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
