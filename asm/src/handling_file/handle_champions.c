@@ -37,7 +37,7 @@ static int call_check_function(
 }
 
 static int write_champions_loop(struct toolbox *toolbox, int compile_filed_fd,
-    FILE *old_file_fd)
+    FILE *old_file_fd, char *solo_label)
 {
     char *line = NULL;
     size_t size = 0;
@@ -45,7 +45,8 @@ static int write_champions_loop(struct toolbox *toolbox, int compile_filed_fd,
     int pos = 0;
 
     while (getline(&line, &size, old_file_fd) != -1) {
-        if (my_strlen(line) < 2)
+        if (unusable_line(line) == TRUE ||
+            there_is_solo_label(line, &solo_label) == TRUE)
             continue;
         toolbox->instructions = realloc(toolbox->instructions,
             (i + 1) * sizeof(struct instruction));
@@ -54,7 +55,7 @@ static int write_champions_loop(struct toolbox *toolbox, int compile_filed_fd,
         if (call_check_function(compile_filed_fd, line,
             &toolbox->instructions[i]) == ERR)
             return ERR;
-        label_handling(toolbox, line, i, &pos);
+        label_handling(toolbox, line, i, &pos, &solo_label);
         ++i;
     }
     return i;
@@ -83,11 +84,12 @@ static void write_prog_size(int compile_filed_fd, struct toolbox *toolbox,
 int write_champions(int compile_filed_fd, FILE *old_file_fd, int params_debute)
 {
     int return_value = 0;
+    char *solo_label = NULL;
     struct toolbox toolbox = {.instructions = NULL, .labels.call = NULL,
         .labels.call_size = 0, .labels.def = NULL, .labels.def_size = 0};
 
     return_value = write_champions_loop(&toolbox, compile_filed_fd,
-        old_file_fd);
+        old_file_fd, solo_label);
     if (return_value == ERR)
         return ERR;
     if (write_labels(compile_filed_fd, &toolbox, params_debute) == ERR)
