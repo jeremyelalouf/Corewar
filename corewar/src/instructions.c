@@ -14,8 +14,8 @@
 #include <string.h>
 #include <stdint.h>
 
-#include "op.h"
-#include "corewar.h"
+#include "../../includes/op.h"
+#include "../../includes/corewar.h"
 
 void live(int nb, char const *name)
 {
@@ -28,15 +28,12 @@ void live(int nb, char const *name)
 
 void ld(UNUSED int nb, UNUSED int *rx, UNUSED uint8_t *pc)
 {
-    // *rx = pc + nb % IDX_MOD;
     printf("ld\n");
 }
 
-void st(UNUSED int *nb1, UNUSED int *nb2, UNUSED uint8_t *pc, UNUSED uint8_t coding_byte)
+void st(UNUSED int *nb1, UNUSED int *nb2,
+    UNUSED uint8_t *pc, UNUSED uint8_t coding_byte)
 {
-    
-    // if les deux sont des r, r1 dans r2
-    // sinon pc + nb % IDX_MOD = *rx;
     printf("st\n");
 }
 

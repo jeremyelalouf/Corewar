@@ -9,16 +9,18 @@ MAIN		=	./src/main.c				\
 
 SRC			=	$(addsuffix .c,				\
 				$(addprefix src/,			\
+					init_struct				\
 					handle_flags			\
 					corewar					\
 					error_handling 			\
 					get_instruction			\
+					get_champions			\
 					get_size_type			\
-					instructions))			\
+					instructions))
 
 SRC_TEST	=	$(addsuffix .c,				\
 				$(addprefix tests/,			\
-					test-project))			\
+					test-project))
 
 OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)
 

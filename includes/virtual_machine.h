@@ -10,6 +10,11 @@
     #include <stdint.h>
     #include "corewar.h"
 
+struct arguments {
+    char const **av;
+    int ac;
+};
+
 void live(uint8_t *arene);
 void ld(uint8_t *arene);
 void st(uint8_t *arene);
@@ -28,8 +33,16 @@ void lfork(uint8_t *arene);
 void aff(uint8_t *arene);
 
 int corewar(int ac, const char *av[]);
-int handle_flags(struct champion *result, char **av, int *index);
+// int handle_flags(struct champion *result, char **av, int *index);
 int error_handling(int ac, char const *av[]);
+
+struct champion *init_champions(void);
+int capture_number(int *index, int ac, char const *av[], int *dump);
+int handly_error_nb_champions(int nb_champions);
+int handly_flag_a(int *index, struct champion *result, char const *av[]);
+int handly_flag_n(int *index, struct champion *result, char const *av[]);
+int check_nb_of_all_champions(struct champion *result, int nb_champions,
+    int value);
 
 int get_param_instruction(int *i, struct instruction *instruction,
     uint8_t *arena);

@@ -1,51 +1,65 @@
 /*
 ** EPITECH PROJECT, 2022
-** handle_flags
+** handly_flag_n
 ** File description:
 ** FreeKOSOVO
 */
 
 #include <stdlib.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#include <unistd.h>
-#include <string.h>
-#include <stdint.h>
 
-#include "corewar.h"
-#include "my.h"
-#include "virtual_machine.h"
+#include "../../includes/corewar.h"
+#include "../../includes/my.h"
+#include "../../includes/virtual_machine.h"
 
-void handle_n_flag(struct champion *c, int value)
+int handly_flag_n(int *index, struct champion *result, char const *av[])
 {
-    c->nb = value;
-}
-
-void handle_a_flag(struct champion *c, int value)
-{
-    c->address = value;
-}
-
-static const struct handle_flags FLAGS[] = {
-    {.flag = "-n", .func = &handle_n_flag},
-    {.flag = "-a", .func = &handle_a_flag},
-};
-
-int handle_flags(struct champion *result, char **av, int *index)
-{
-    if (av[*index][0] != '-') {
-        result->address = 0;
-        result->nb = 0;
-        return SUCC;
+    if (!my_str_isnum(av[*index]) || my_getnbr((char *)av[*index]) < 1
+        || my_getnbr((char *)av[*index]) > MAX_ARGS_NUMBER) {
+        my_putsterr("-n argument ");
+        my_putsterr(av[*index]);
+        my_putsterr(" is invalid.\nEnter a number between 1 and ");
+        my_put_nberr(MAX_ARGS_NUMBER);
+        my_putsterr(".\n");
+        return -1;
     }
-    for (int i = 0; i != FLAGS_NUMBER; ++i) {
-        if (my_strcmp(av[*index], FLAGS[i].flag) == 0) {
-            FLAGS[i].func (result, my_getnbr(av[*index + 1]));
-            *index += 2;
-            return SUCC;
+    result->nb = my_getnbr((char *)av[*index]);
+    (*index)++;
+    return 0;
+}
+
+int handly_flag_a(int *index, struct champion *result, char const *av[])
+{
+    if (my_strcmp(av[*index], "-a") == 0) {
+        if (!my_str_isnum(av[*index + 1])) {
+            my_putsterr("Invalind option.\n");
+            return -1;
         }
+        (*index)++;
+        result->address = my_getnbr((char *)av[*index]);
+        if (result->address < 0) {
+            my_putsterr("-a argument ");
+            my_putsterr(av[*index]);
+            my_putsterr(" is invalid.\nEnter a valid memory offset.\n");
+            return -1;
+        }
+        (*index)++;
     }
-    return ERR;
+    return 0;
+}
+
+int capture_number(int *index, int ac, char const *av[], int *dump)
+{
+    int result = 0;
+
+    if ((*index) + 2 > ac)
+        return -1;
+    (*index)++;
+    if (!my_str_isnum(av[*index]) || my_strlen(av[*index]) > 15)
+        return -1;
+    result = my_getnbr((char *)av[*index]);
+    if (result < 0)
+        return -1;
+    *dump = result;
+    (*index)++;
+    return 0;
 }

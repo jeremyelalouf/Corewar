@@ -7,9 +7,9 @@
 
 #include <stdlib.h>
 
-#include "corewar.h"
-#include "virtual_machine.h"
-#include "my.h"
+#include "../../includes/corewar.h"
+#include "../../includes/virtual_machine.h"
+#include "../../includes/my.h"
 
 static uint32_t get_param(int param_size, uint8_t *arena)
 {

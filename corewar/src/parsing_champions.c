@@ -41,52 +41,52 @@
 //     return 0;
 // }
 
-static char const *get_nb_cycle(char const *av[])
-{
-    for (int i = 0; av[i] != NULL; i++) {
-        if (my_strcmp(av[i], "-dump"))
-            return (av[i + 1]);
-    }
-    return NULL;
-}
+// static char const *get_nb_cycle(char const *av[])
+// {
+//     for (int i = 0; av[i] != NULL; i++) {
+//         if (my_strcmp(av[i], "-dump"))
+//             return (av[i + 1]);
+//     }
+//     return NULL;
+// }
 
-static struct champion get_champion(struct informations *info, int ac, char const *av[])
-{
-    struct champion c = {0};
-    for (int i = 1; i < ac; i++) {
-        if (my_strcmp(av[i], "-dump") == 0)
-            i += 2;
-        if (my_strcmp(av[i], "-n") == 0) {
-            i++;
-            c.nb = my_getnbr(av[i]);
-        }
-        if (my_strcmp(av[i], "-a") == 0) {
-            i++;
-        }
-    }
-    // i->nb_champions += 1;
-    // i->all_champions[0] = c;
-    return c;
-}
+// static struct champion get_champion(struct informations *info, int ac, char const *av[])
+// {
+//     struct champion c = {0};
+//     for (int i = 1; i < ac; i++) {
+//         if (my_strcmp(av[i], "-dump") == 0)
+//             i += 2;
+//         if (my_strcmp(av[i], "-n") == 0) {
+//             i++;
+//             c.nb = my_getnbr(av[i]);
+//         }
+//         if (my_strcmp(av[i], "-a") == 0) {
+//             i++;
+//         }
+//     }
+//     // i->nb_champions += 1;
+//     // i->all_champions[0] = c;
+//     return c;
+// }
 
-int parsing_champions(int ac, char const *av[])
-{
-    struct informations i = {get_nb_cycle(av), -1, get_champion(&i, ac, av)};
-    u_int8_t *arene = malloc(sizeof(u_int8_t) * MEM_SIZE);
+// int parsing_champions(int ac, char const *av[])
+// {
+//     struct informations i = {get_nb_cycle(av), -1, get_champion(&i, ac, av)};
+//     u_int8_t *arene = malloc(sizeof(u_int8_t) * MEM_SIZE);
 
-    if (arene == NULL)
-        return -1;
-    if (i.nbr_cycle == NULL)
-        return -1;
-    memset(arene, 0, MEM_SIZE - 1);
+//     if (arene == NULL)
+//         return -1;
+//     if (i.nbr_cycle == NULL)
+//         return -1;
+//     memset(arene, 0, MEM_SIZE - 1);
 
-    //TODO write the scene and execute;
-    // for (int i = 0; i < ac; i++) {
-    //     if (decriptage(av[i], arene) == -1) {
-    //         free(arene);
-    //         return -1;
-    //     }
-    // }
-    free(arene);
-    return 0;
-}
+//     //TODO write the scene and execute;
+//     // for (int i = 0; i < ac; i++) {
+//     //     if (decriptage(av[i], arene) == -1) {
+//     //         free(arene);
+//     //         return -1;
+//     //     }
+//     // }
+//     free(arene);
+//     return 0;
+// }
