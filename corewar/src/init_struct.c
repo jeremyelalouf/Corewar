@@ -9,15 +9,11 @@
 
 #include "../../includes/virtual_machine.h"
 
-struct champion *init_champions(void)
+struct champion *init_champions(struct champion *result)
 {
-    struct champion *result = malloc(sizeof(struct champion));
-
-    if (result == NULL)
-        return result;
-    result->actual_cycle = -1;
-    result->address = -1;
+    result->actual_cycle = 0;
+    result->address = 0;
     result->filepath = NULL;
-    result->nb = -1;
+    result->nb = 0;
     return result;
 }

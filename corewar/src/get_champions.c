@@ -20,13 +20,19 @@
 int read_champion(struct champion *result)
 {
     int fd = open(result->filepath, O_RDONLY);
+
     if (fd == -1) {
         my_putsterr("Error in function open: No such file or directory.\n");
         return -1;
     }
     if (read(fd, &result->h, sizeof(header_t)) == -1)
         return -1;
-    // if magic number error return -1
+    my_bswap((void *)&result->h.magic, sizeof(int));
+    if (result->h.magic != COREWAR_EXEC_MAGIC) {
+        my_putsterr("Wrong executable magic number.\n");
+        return -1;
+    }
+    // result->i =
     close(fd);
     return 0;
 }
@@ -34,16 +40,11 @@ int read_champion(struct champion *result)
 int add_player_with_num(int *index, int ac, char const *av[],
     struct champion *result)
 {
-    if ((*index) + 3 > ac) {
-        my_putsterr("Ivalid option.\n");
+    result = init_champions(result);
+    if (handly_flag_n(index, result, av, ac) == -1)
         return -1;
-    }
-    (*index)++;
-    if (handly_flag_n(index, result, av) == -1)
+    if (handly_flag_a(index, result, av, ac) == -1)
         return -1;
-    if (handly_flag_a(index, result, av) == -1)
-        return -1;
-    result->actual_cycle = 0;
     result->filepath = av[*index];
     if (read_champion(result) == -1)
         return -1;
@@ -51,9 +52,15 @@ int add_player_with_num(int *index, int ac, char const *av[],
     return 0;
 }
 
-int add_player_whithout_num(UNUSED int *index, UNUSED int ac, UNUSED char const *av[],
-    UNUSED struct champion *result)
+int add_player_whithout_num(int *index, int nb_champions, char const *av[],
+    struct champion *result)
 {
+    result = init_champions(result);
+    result->filepath = av[*index];
+    found_new_nb(result, nb_champions, &result->nb);
+    if (read_champion(result) == -1)
+        return -1;
+    (*index)++;
     return 0;
 }
 
@@ -63,11 +70,11 @@ int get_opt(struct arguments arg, int *i,  int nb_champions,
     char const **av = arg.av;
     int ac = arg.ac;
 
-    if (my_strcmp(av[*i], "-n") == 0) {
+    if (av[*i][0] == '-') {
         if (add_player_with_num(i, ac, av, result + nb_champions) == -1)
             return -1;
         if (check_nb_of_all_champions(result, nb_champions,
-            result[nb_champions].nb) == -1)
+            &result[nb_champions].nb) == -1)
             return -1;
     } else
         if (add_player_whithout_num(i, ac, av, result + nb_champions) == -1)
@@ -91,16 +98,18 @@ int handle_dump_flag(int *index, int ac, char const *av[], int *dump)
 struct champion *get_all_champions(int ac, const char *av[],
     int *dump, int *nb_champions)
 {
-    struct champion *result = init_champions();
+    struct champion *result =
+        malloc(sizeof(struct champion) * (*nb_champions + 1));
     struct arguments arg = {.ac = ac, .av = av};
-    int index = 1;
 
     if (result == NULL)
         return NULL;
-    for (int i = index; i < ac;) {
+    result = init_champions(result);
+    for (int i = 1; i < ac;) {
         if (handle_dump_flag(&i, ac, av, dump) == -1)
             return NULL;
-        result = realloc(result, sizeof(struct champion) * (*nb_champions + 1));
+        result =
+            realloc(result, sizeof(struct champion) * (*nb_champions + 1));
         if (result == NULL)
             return NULL;
         if (get_opt(arg, &i, *nb_champions, result) == -1)

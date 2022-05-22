@@ -14,6 +14,7 @@ SRC			=	$(addsuffix .c,				\
 					corewar					\
 					error_handling 			\
 					get_instruction			\
+					check_nb_of_all_champions	\
 					get_champions			\
 					get_size_type			\
 					instructions))

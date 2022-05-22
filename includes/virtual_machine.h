@@ -36,13 +36,17 @@ int corewar(int ac, const char *av[]);
 // int handle_flags(struct champion *result, char **av, int *index);
 int error_handling(int ac, char const *av[]);
 
-struct champion *init_champions(void);
+void found_new_nb(struct champion *result, int nb_champions,
+    int *value);
+struct champion *init_champions(struct champion *);
 int capture_number(int *index, int ac, char const *av[], int *dump);
 int handly_error_nb_champions(int nb_champions);
-int handly_flag_a(int *index, struct champion *result, char const *av[]);
-int handly_flag_n(int *index, struct champion *result, char const *av[]);
+int handly_flag_a(int *index, struct champion *result, char const *av[],
+    int ac);
+int handly_flag_n(int *index, struct champion *result, char const *av[],
+    int ac);
 int check_nb_of_all_champions(struct champion *result, int nb_champions,
-    int value);
+    int *value);
 
 int get_param_instruction(int *i, struct instruction *instruction,
     uint8_t *arena);

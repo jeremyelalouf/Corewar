@@ -10,18 +10,6 @@
 #include "my.h"
 #include "virtual_machine.h"
 
-int check_nb_of_all_champions(struct champion *result, int nb_champions,
-    int value)
-{
-    for (int i = 0; i < (nb_champions - 1); i++) {
-        if (value == result[i].nb) {
-            my_putsterr("double definition of prog_number.\n");
-            return -1;
-        }
-    }
-    return 0;
-}
-
 int handly_error_nb_champions(int nb_champions)
 {
     if (nb_champions > MAX_ARGS_NUMBER) {

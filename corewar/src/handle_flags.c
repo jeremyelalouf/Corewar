@@ -11,8 +11,16 @@
 #include "../../includes/my.h"
 #include "../../includes/virtual_machine.h"
 
-int handly_flag_n(int *index, struct champion *result, char const *av[])
+int handly_flag_n(int *index, struct champion *result,
+    char const *av[], int ac)
 {
+    if (my_strcmp("-n", av[*index]))
+        return 1;
+    if ((*index) + 3 > ac) {
+        my_putsterr("Ivalid option.\n");
+        return -1;
+    }
+    (*index)++;
     if (!my_str_isnum(av[*index]) || my_getnbr((char *)av[*index]) < 1
         || my_getnbr((char *)av[*index]) > MAX_ARGS_NUMBER) {
         my_putsterr("-n argument ");
@@ -27,23 +35,24 @@ int handly_flag_n(int *index, struct champion *result, char const *av[])
     return 0;
 }
 
-int handly_flag_a(int *index, struct champion *result, char const *av[])
+int handly_flag_a(int *index, struct champion *result,
+    char const *av[], int ac)
 {
-    if (my_strcmp(av[*index], "-a") == 0) {
-        if (!my_str_isnum(av[*index + 1])) {
-            my_putsterr("Invalind option.\n");
-            return -1;
-        }
-        (*index)++;
-        result->address = my_getnbr((char *)av[*index]);
-        if (result->address < 0) {
-            my_putsterr("-a argument ");
-            my_putsterr(av[*index]);
-            my_putsterr(" is invalid.\nEnter a valid memory offset.\n");
-            return -1;
-        }
-        (*index)++;
+    if (my_strcmp("-a", av[*index]))
+        return 1;
+    if ((*index) + 3 > ac || !my_str_isnum(av[*index + 1])) {
+        my_putsterr("Ivalid option.\n");
+        return -1;
     }
+    (*index)++;
+    result->address = my_getnbr((char *)av[*index]);
+    if (result->address < 0) {
+        my_putsterr("-a argument ");
+        my_putsterr(av[*index]);
+        my_putsterr(" is invalid.\nEnter a valid memory offset.\n");
+        return -1;
+    }
+    (*index)++;
     return 0;
 }
 
