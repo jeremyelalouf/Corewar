@@ -113,8 +113,6 @@ struct champion *get_all_champions(int ac, const char *av[],
         if (get_opt(arg, &i, *nb_champions, result) == -1)
             return NULL;
         (*nb_champions)++;
-        if (handly_error_nb_champions(*nb_champions) == -1)
-            return NULL;
     }
     return result;
 }

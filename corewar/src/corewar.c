@@ -19,19 +19,32 @@
 struct champion *get_all_champions(int ac, const char *av[],
     int *dump, int *nb_champions);
 
-int game(int nb_champions, struct champion* champions, UNUSED uint8_t *arene)
+int game(int nb_champions, struct champion* champions, uint8_t *arena)
 {
     int cycle = 0;
-    int i = 0;
+    int nbr_champions = 0;
+    int return_val;
 
+    while (champions[nbr_champions].filepath != NULL)
+        ++nbr_champions;
     while (cycle != CYCLE_TO_DIE) {
-        while (i < nb_champions) {
-            printf("name : %s\nadress : %d\nnb : %d\n---\n", champions[i].h.prog_name, champions[i].address, champions[i].nb);
-            ++i;
-        }
+        return_val = handle_champion_action(champions, arena);
+        if (return_val == ERR)
+            return (ERR);
+        if (is_game_win_or_lose(nbr_champions, return_val, champions) == TRUE)
+            return (SUCC);
         ++cycle;
     }
-    return 0;
+    return (SUCC);
+}
+
+uint8_t *fill_arena(struct champion *champions)
+{
+    uint8_t *arena = malloc(sizeof(uint8_t) * MEM_SIZE);
+
+    if (arena == NULL)
+        return (NULL);
+    return (arena);
 }
 
 int create_new_champion(struct vm_i *vm_inf, struct opt_value *tmp)

@@ -9,12 +9,6 @@
 #include "corewar.h"
 #include "op.h"
 
-static void print_byte_as_bits(char val)
-{
-    for (int i = 7; 0 <= i; i--)
-        printf("%c\n", (val & (1 << i)) ? '1' : '0');
-}
-
 int check_live(struct instruction *instruction, char **params, int fd)
 {
     instruction->instruction = 1;
@@ -33,6 +27,7 @@ int check_ld(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -43,6 +38,7 @@ int check_st(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -53,6 +49,7 @@ int check_add(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -63,5 +60,6 @@ int check_sub(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }

@@ -1,6 +1,7 @@
 libmy.a
 .vscode
 *.o
+*.a
 *~
 *.s
 *.cor

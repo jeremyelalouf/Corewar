@@ -35,12 +35,16 @@ static int fill_header(char *command, char *arg, header_t *header,
     struct pars_counter *pars_i)
 {
     if (my_strcmp(command, NAME_CMD_STRING) == 0) {
+        if (my_strlen(arg) > PROG_NAME_LENGTH)
+            return ERR;
         my_memset(header->prog_name, 0, PROG_NAME_LENGTH + 1);
         my_strcpy(header->prog_name, arg);
     } else if (my_strcmp(command, COMMENT_CMD_STRING) != 0) {
         print_invalid(pars_i);
         return ERR;
     } if (my_strcmp(command, COMMENT_CMD_STRING) == 0) {
+        if (my_strlen(arg) > COMMENT_LENGTH)
+            return ERR;
         my_memset(header->comment, 0, COMMENT_LENGTH + 1);
         my_strcpy(header->comment, arg);
     } else if (my_strcmp(command, NAME_CMD_STRING) != 0) {
@@ -69,24 +73,26 @@ static int handle_to_fill_header(header_t *header, char *line,
 }
 
 int write_header(int compile_filed_fd, FILE *old_file_fd,
-    struct pars_counter *pars_i)
+    struct pars_counter *pars_i, int *params_debute)
 {
-    char *line = NULL;
+    char *line = "#";
     size_t size = 0;
     header_t header = {0};
 
-    if (getline(&line, &size, old_file_fd) == ERR)
+    if (handle_comment(&line, &size, old_file_fd) == ERR)
         return ERR;
     ++pars_i->line;
     if (handle_to_fill_header(&header, line, pars_i) == ERR)
         return ERR;
-    header.magic = my_bswap(COREWAR_EXEC_MAGIC);
-    header.prog_size = my_bswap(2214);
+    fill_magic(&header);
     if (getline(&line, &size, old_file_fd) == ERR)
         return ERR;
     ++pars_i->line;
+    if (my_strstr(line, NAME_CMD_STRING) != NULL)
+        return ERR;
     if (handle_to_fill_header(&header, line, pars_i) == ERR)
         return ERR;
     write(compile_filed_fd, &header, sizeof(header));
+    *params_debute = sizeof(header);
     return SUCC;
 }

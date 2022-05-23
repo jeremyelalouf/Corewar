@@ -14,7 +14,7 @@ static int get_size_type(uint8_t type_param)
 {
     if (type_param == T_REG) {
         return (REG_BYTE_SIZE);
-    } else if (type_param == T_IND) {
+    } else if (type_param == VAL_IND) {
         return (IND_SIZE);
     } else {
         return (DIR_SIZE);
@@ -26,9 +26,9 @@ static int is_instruction_reg_or_index(int k, uint8_t type_param,
 {
     if (TAB_INSTRUCTION[k].have_index == TRUE) {
         if (type_param != T_REG)
-            args->size += IND_SIZE;
+            args->size = IND_SIZE;
         else
-            args->size += REG_BYTE_SIZE;
+            args->size = REG_BYTE_SIZE;
         return (TRUE);
     } else {
         return (FALSE);
@@ -50,20 +50,17 @@ static int is_instruction_with_index(int j, uint8_t type_param,
 int get_parameters_size(struct instruction *instruction)
 {
     int i = 0;
-    int j = 0;
     uint8_t type_param = 0;
 
-    while (op_tab[i].code != instruction->instruction)
-        ++i;
-    while (j < op_tab[i].nbr_args) {
-        type_param = ((instruction->coding_byte << 2 * j & 0xff) >> 6);
-        if (is_instruction_with_index(j, type_param, instruction)
+    while (i < op_tab[instruction->instruction - 1].nbr_args) {
+        type_param = ((instruction->coding_byte << 2 * i & 0xff) >> 6);
+        if (is_instruction_with_index(i, type_param, instruction)
             == TRUE) {
-            ++j;
+            ++i;
             continue;
         }
-        instruction->params[j].size = get_size_type(type_param);
-        ++j;
+        instruction->params[i].size = get_size_type(type_param);
+        ++i;
     }
-    return (j);
+    return (i);
 }

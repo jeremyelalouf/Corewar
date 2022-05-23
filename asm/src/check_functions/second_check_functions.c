@@ -15,6 +15,7 @@ int check_and(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -25,6 +26,7 @@ int check_or(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -35,6 +37,7 @@ int check_xor(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -45,6 +48,7 @@ int check_zjmp(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
 
@@ -55,5 +59,6 @@ int check_ldi(struct instruction *instruction, char **params, int fd)
     if (instruction->coding_byte == FALSE)
         return ERR;
     fill_params_array(instruction, params);
+    write_instruction(fd, instruction);
     return SUCC;
 }
