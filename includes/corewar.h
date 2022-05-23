@@ -38,11 +38,16 @@ struct instruction {
 
 struct champion {
     const char *filepath;
-    struct instruction *i;
     header_t h;
     int nb;
     int address;
     int actual_cycle;
+};
+
+struct vm_i {
+    struct champion *champions;
+    int dump;
+    int champions_nbr;
 };
 
 typedef struct label_s {

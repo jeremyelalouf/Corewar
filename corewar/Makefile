@@ -5,22 +5,22 @@
 ## makefile
 ##
 
-MAIN		=	./src/main.c				\
+MAIN		=	./src/main.c					\
 
-SRC			=	$(addsuffix .c,				\
-				$(addprefix src/,			\
-					init_struct				\
-					handle_flags			\
-					corewar					\
-					error_handling 			\
-					get_instruction			\
-					check_nb_of_all_champions	\
-					get_champions			\
-					get_size_type			\
-					instructions))
+SRC			=	$(addsuffix .c,					\
+				$(addprefix src/,				\
+				init_struct						\
+				handle_flags					\
+				corewar							\
+				error_handling 					\
+				get_instruction					\
+				check_nb_of_all_champions		\
+				get_size_type					\
+				handle_option					\
+				instructions))
 
-SRC_TEST	=	$(addsuffix .c,				\
-				$(addprefix tests/,			\
+SRC_TEST	=	$(addsuffix .c,					\
+				$(addprefix tests/,				\
 					test-project))
 
 OBJ			=	$(SRC:.c=.o) $(MAIN:.c=.o)

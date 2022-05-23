@@ -32,7 +32,6 @@ int read_champion(struct champion *result)
         my_putsterr("Wrong executable magic number.\n");
         return -1;
     }
-    // result->i =
     close(fd);
     return 0;
 }
@@ -57,7 +56,6 @@ int add_player_whithout_num(int *index, int nb_champions, char const *av[],
 {
     result = init_champions(result);
     result->filepath = av[*index];
-    found_new_nb(result, nb_champions, &result->nb);
     if (read_champion(result) == -1)
         return -1;
     (*index)++;

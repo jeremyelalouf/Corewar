@@ -32,7 +32,7 @@ void lldi(uint8_t *arene);
 void lfork(uint8_t *arene);
 void aff(uint8_t *arene);
 
-int corewar(int ac, const char *av[]);
+int corewar(int ac, char *av[]);
 // int handle_flags(struct champion *result, char **av, int *index);
 int error_handling(int ac, char const *av[]);
 

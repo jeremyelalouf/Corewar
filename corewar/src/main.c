@@ -12,7 +12,7 @@ int main(int argc, char const *argv[])
 {
     if (error_handling(argc, argv) == ERR)
         return EXIT_ERR;
-    if (corewar(argc, argv) == ERR)
+    if (corewar(argc, (char **)argv) == ERR)
         return EXIT_ERR;
     return 0;
 }
