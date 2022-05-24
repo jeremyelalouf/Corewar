@@ -13,13 +13,14 @@
 
 static void reset_instruction_if_error(int i, struct champion **champions)
 {
+    ++(*champions)[i].actual_cycle;
     ++(*champions)[i].address;
     free((*champions)[i].i);
     (*champions)[i].i = NULL;
 }
 
-static int call_instruction(int address_offset, struct champion *champion,
-    uint8_t *arena, struct champion **champions)
+static int call_instruction(struct champion *champion, uint8_t *arena,
+    struct champion **champions)
 {
     int tmp = champion->i->instruction;
 
@@ -33,8 +34,8 @@ static int call_instruction(int address_offset, struct champion *champion,
     if (tmp == 0x0c || tmp == 0x0f)
         return (SUCC);
     champion->actual_cycle = 0;
-    champion->address += address_offset + 2;
-    champion->mov_in_mem += address_offset + 2;
+    champion->address += champion->address_offset + 2;
+    champion->mov_in_mem += champion->address_offset + 2;
     champion->address_offset = 0;
     free(champion->i);
     champion->i = NULL;
@@ -49,8 +50,8 @@ static int call_champions_instruction(int i, struct champion **champions,
         if ((*champions)[i].i == NULL)
             return (ERR);
         (*champions)[i].i->instruction = arena[(*champions)[i].address];
-        if ((*champions)[i].i->instruction == 0x00 ||
-            (*champions)[i].i->instruction > 0x10) {
+        if ((*champions)[i].i->instruction == (uint8_t)0x00 ||
+            (*champions)[i].i->instruction > (uint8_t)0x10) {
             reset_instruction_if_error(i, champions);
             return (SUCC);
         }
@@ -60,8 +61,7 @@ static int call_champions_instruction(int i, struct champion **champions,
         if ((*champions)[i].address_offset == ERR)
             reset_instruction_if_error(i, champions);
     } else {
-        call_instruction((*champions)[i].address_offset, &(*champions)[i],
-            arena, champions);
+        call_instruction(&(*champions)[i], arena, champions);
     }
     return (SUCC);
 }

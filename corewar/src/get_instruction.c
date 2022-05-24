@@ -96,13 +96,13 @@ int get_param_instruction(int *i, struct instruction *instruction,
 {
     int r_val = 0;
 
-    if (instruction->instruction == 0x01) {
+    if (instruction->instruction == (uint8_t)0x01) {
         instruction->params[0].types.direct = get_param(DIR_SIZE,
             &arena[(*i + 1)]);
         r_val += 3;
-    } else if (instruction->instruction == 0x09 ||
-        instruction->instruction == 0x0c ||
-        instruction->instruction == 0x0f) {
+    } else if (instruction->instruction == (uint8_t)0x09 ||
+        instruction->instruction == (uint8_t)0x0c ||
+        instruction->instruction == (uint8_t)0x0f) {
         instruction->params[0].types.indirect = get_param(IND_SIZE,
             &arena[(*i + 1)]);
         r_val += 1;
