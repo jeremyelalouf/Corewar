@@ -11,6 +11,7 @@
     #define ATOD(x)     (x - '@')
     #define DTOA(x)     (x + '0')
     #define ADTOD(x)    (x - '0')
+    #define SIZEOF(x)   sizeof(x) / sizeof(*x)
     #define UNUSED  __attribute__((unused))
     #define EXIT_ERR    84
     #define FALSE       0

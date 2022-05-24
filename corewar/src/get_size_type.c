@@ -5,7 +5,7 @@
 ** get_size_type
 */
 
-#include "../../includes/corewar.h"
+#include "corewar.h"
 
 int get_size_type(uint8_t type_param)
 {

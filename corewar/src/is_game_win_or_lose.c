@@ -12,6 +12,7 @@ int is_game_win_or_lose(int nbr_champions, int nbr_dead_champions,
     struct champion *champions)
 {
     if (nbr_dead_champions == nbr_champions) {
+        printf("pangolin\n");
         return (TRUE);
     }
     if (nbr_dead_champions + 1 == nbr_champions) {

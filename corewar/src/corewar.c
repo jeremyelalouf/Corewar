@@ -19,32 +19,15 @@
 struct champion *get_all_champions(int ac, const char *av[],
     int *dump, int *nb_champions);
 
-int game(int nb_champions, struct champion* champions, uint8_t *arena)
+static void init_info_champion(struct vm_i *vm_inf)
 {
-    int cycle = 0;
-    int nbr_champions = 0;
-    int return_val;
-
-    while (champions[nbr_champions].filepath != NULL)
-        ++nbr_champions;
-    while (cycle != CYCLE_TO_DIE) {
-        return_val = handle_champion_action(champions, arena);
-        if (return_val == ERR)
-            return (ERR);
-        if (is_game_win_or_lose(nbr_champions, return_val, champions) == TRUE)
-            return (SUCC);
-        ++cycle;
+    for (int i = 0; i < REG_NUMBER; ++i) {
+        vm_inf->champions[vm_inf->champions_nbr].registers[i] = 0;
     }
-    return (SUCC);
-}
-
-uint8_t *fill_arena(struct champion *champions)
-{
-    uint8_t *arena = malloc(sizeof(uint8_t) * MEM_SIZE);
-
-    if (arena == NULL)
-        return (NULL);
-    return (arena);
+    vm_inf->champions[vm_inf->champions_nbr].is_dead = FALSE;
+    vm_inf->champions[vm_inf->champions_nbr].nbr_cycle_last_live = 0;
+    vm_inf->champions[vm_inf->champions_nbr].carry = 0;
+    vm_inf->champions[vm_inf->champions_nbr].i = NULL;
 }
 
 int create_new_champion(struct vm_i *vm_inf, struct opt_value *tmp)
@@ -64,6 +47,7 @@ int create_new_champion(struct vm_i *vm_inf, struct opt_value *tmp)
     else
         vm_inf->champions[vm_inf->champions_nbr].nb =
             vm_inf->champions_nbr + 1;
+    init_info_champion(vm_inf);
     return SUCC;
 }
 
@@ -74,7 +58,7 @@ int fill_arene_and_i(struct vm_i *vm_inf, uint8_t *arene, char *path_to_file,
     int address = 0;
     header_t header_tmp;
 
-    if (read(fd, &header_tmp, sizeof(header_t)) == ERR)
+    if (fd == ERR || read(fd, &header_tmp, sizeof(header_t)) == ERR)
         return ERR;
     my_bswap(&header_tmp.magic, sizeof(int));
     if (header_tmp.magic != COREWAR_EXEC_MAGIC) {
@@ -111,6 +95,11 @@ int handle_opt_and_fill_arene(struct vm_i *vm_inf, uint8_t *arene, char *av[])
         if (vm_inf->champions_nbr > MAX_ARGS_NUMBER)
             return ERR;
     }
+    vm_inf->champions = realloc(vm_inf->champions, sizeof(struct champion) *
+        (vm_inf->champions_nbr + 1));
+    if (vm_inf->champions == NULL)
+        return ERR;
+    vm_inf->champions[vm_inf->champions_nbr].carry = END_OF_TAB;
     return SUCC;
 }
 
@@ -120,9 +109,11 @@ int corewar(int ac, char *av[])
     uint8_t *arene = malloc(sizeof(uint8_t) * MEM_SIZE);
 
     if (arene == NULL)
-        return NULL;
+        return ERR;
     my_memset(arene, 0, MEM_SIZE);
     if (handle_opt_and_fill_arene(&vm_inf, arene, av) == ERR)
+        return ERR;
+    if (do_game(vm_inf.champions, arene) == ERR)
         return ERR;
     return SUCC;
 }

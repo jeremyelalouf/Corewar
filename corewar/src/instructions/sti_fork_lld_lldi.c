@@ -58,7 +58,7 @@ int my_fork(struct champion *c, uint8_t *arena, struct champion *fork_param)
 
     while (fork_param->filepath != NULL)
         ++i;
-    fork_param = realloc(fork_param, i + 2);
+    fork_param = realloc(fork_param, sizeof(struct champion) * (i + 2));
     if (fork_param == NULL)
         return (ERR);
     fork_param[i] = *c;

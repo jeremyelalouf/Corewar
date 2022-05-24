@@ -74,17 +74,23 @@ static int get_param_from_coding_byte(int *pos_in_arena,
     int *param_size;
 
     instruction->coding_byte = arena[*pos_in_arena + 1];
-    if (verify_coding_byte(instruction) == ERR)
+    if (verify_coding_byte(instruction) == ERR) {
+        printf("a1\n");
         return (ERR);
+    }
     param_size = get_read_size(instruction->instruction,
         instruction->coding_byte);
-    if (param_size == NULL)
+    if (param_size == NULL) {
+        printf("a2\n");
         return (ERR);
+    }
     for (int i = 0; i < 4 && param_size[i] != END_OF_TAB; ++i) {
         instruction->params[i].types.direct = get_param(param_size[i],
-            &arena[*pos_in_arena + size + 1]);
-        if (instruction->params[i].types.direct == ERR)
+            &arena[*pos_in_arena + size + 2]);
+        if (instruction->params[i].types.direct == ERR) {
+            printf("a3\n");
             return (ERR);
+        }
         size += param_size[i];
     }
     free(param_size);
@@ -105,6 +111,7 @@ int get_param_instruction(int *i, struct instruction *instruction,
         instruction->instruction == 0x0f) {
         instruction->params[0].types.indirect = get_param(IND_SIZE,
             &arena[++(*i)]);
+        r_val += 1;
     } else {
         r_val = get_param_from_coding_byte(i, instruction, arena);
     }

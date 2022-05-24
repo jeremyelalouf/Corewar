@@ -103,6 +103,7 @@ int handly_flag_n(int *index, struct champion *result, char const *av[],
     int ac);
 int check_nb_of_all_champions(struct champion *result, int nb_champions,
     int *value);
+int do_game(struct champion *champions, uint8_t *arena);
 int handle_champion_action(struct champion *champions,
     uint8_t *arena);
 

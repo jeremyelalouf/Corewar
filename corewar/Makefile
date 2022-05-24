@@ -15,9 +15,17 @@ SRC			=	$(addsuffix .c,					\
 				error_handling 					\
 				get_instruction					\
 				check_nb_of_all_champions		\
-				get_size_type					\
 				handle_option					\
-				instructions))
+				get_size_type					\
+				handle_champion_action			\
+				error_handling_instruction		\
+				get_type_and_val				\
+				is_game_win_or_lose				\
+				$(addprefix instructions/,		\
+				and_or_xor_zjmp_ldi				\
+				live_ld_st_add_sub				\
+				sti_fork_lld_lldi				\
+				lfork_aff)))
 
 SRC_TEST	=	$(addsuffix .c,					\
 				$(addprefix tests/,				\
