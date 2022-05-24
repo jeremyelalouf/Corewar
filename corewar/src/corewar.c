@@ -67,7 +67,9 @@ int fill_arene_and_i(struct vm_i *vm_inf, uint8_t *arene, char *path_to_file,
     int address = 0;
     header_t header_tmp;
 
-    if (fd == ERR || read(fd, &header_tmp, sizeof(header_t)) == ERR)
+    if (fd == ERR)
+        return ERR;
+    if (read(fd, &header_tmp, sizeof(header_t)) == ERR)
         return ERR;
     my_bswap(&header_tmp.magic, sizeof(int));
     if (header_tmp.magic != COREWAR_EXEC_MAGIC) {

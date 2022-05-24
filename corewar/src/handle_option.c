@@ -44,7 +44,8 @@ int handle_option(struct vm_i *vm_inf, char *av[], int *i,
     for (int count = 0; count != SIZEOF(OPT_TAB); ++count) {
         if (my_strcmp(av[*i], OPT_TAB[count].instruction) == 0) {
             return_value = OPT_TAB[count].function(vm_inf, av, *i, tmp);
-            ++(*i);
+            if (return_value == SUCC)
+                *i += 2;
         }
     }
     return return_value;
