@@ -31,7 +31,7 @@
     #define COMMENT_LENGTH          2048
     #define CYCLE_TO_DIE    1536
     #define CYCLE_DELTA     5
-    #define NBR_LIVE        40
+    #define NBR_LIVE        1000
 
 typedef char args_type_t;
 

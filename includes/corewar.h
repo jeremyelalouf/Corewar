@@ -50,6 +50,7 @@ struct champion {
     int nb;
     int address;
     int address_offset;
+    int mov_in_mem;
 };
 
 struct vm_i {

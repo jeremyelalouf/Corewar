@@ -10,8 +10,8 @@
     #include <stdint.h>
     #include "corewar.h"
 
-typedef int instruction_fun_t(struct champion * c, uint8_t *arena,
-    struct champion *fork_param);
+typedef int instruction_fun_t(struct champion *c, uint8_t *arena,
+    struct champion **fork_param);
 
 struct arguments {
     int ac;
@@ -103,8 +103,8 @@ int handly_flag_n(int *index, struct champion *result, char const *av[],
     int ac);
 int check_nb_of_all_champions(struct champion *result, int nb_champions,
     int *value);
-int do_game(struct champion *champions, uint8_t *arena);
-int handle_champion_action(struct champion *champions,
+int do_game(struct champion **champions, uint8_t *arena);
+int handle_champion_action(struct champion **champions,
     uint8_t *arena);
 
 int get_param_instruction(int *i, struct instruction *instruction,
@@ -116,8 +116,11 @@ uint8_t get_type_param(int param_pos, uint8_t coding_byte);
 
 void copy_champion_fork(int real_address_fork, int real_address_c,
     struct champion *c, uint8_t *arena);
+void dup_fork_param(struct champion *fork_param1,
+    struct champion *fork_param2);
+void reset_champion_after_fork(struct champion *champion);
 
 int is_game_win_or_lose(int nbr_champions, int nbr_dead_champions,
-    struct champion *champions);
+    struct champion **champions);
 
 #endif/* !VM_H */

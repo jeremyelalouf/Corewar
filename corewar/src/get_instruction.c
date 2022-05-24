@@ -24,7 +24,7 @@ static uint32_t get_param(int param_size, uint8_t *arena)
             return (ERR);
     }
     while (i < param_size) {
-        param |= arena[i];
+        param |= arena[i] << (8 * i);
         ++i;
     }
     return (param);
@@ -38,7 +38,6 @@ static int is_instruction_reg_or_index(int k, uint8_t type_param,
            *param_size = IND_SIZE;
         else
             *param_size = REG_BYTE_SIZE;
-        printf("%d\n", *param_size);
         return (TRUE);
     } else {
         return (FALSE);
@@ -61,7 +60,6 @@ static int *get_read_size(uint8_t instruction, uint8_t coding_byte)
             continue;
         }
         param_size[i] = get_size_type(type_param);
-        printf("%d\n", param_size[i]);
         ++i;
     }
     if (i != 4)
@@ -76,25 +74,18 @@ static int get_param_from_coding_byte(int *pos_in_arena,
     int *param_size;
 
     instruction->coding_byte = arena[(*pos_in_arena + 1)];
-    if (verify_coding_byte(instruction) == ERR) {
-        printf("a1\n");
+    if (verify_coding_byte(instruction) == ERR)
         return (ERR);
-    }
     param_size = get_read_size(instruction->instruction,
         instruction->coding_byte);
-    if (param_size == NULL) {
-        printf("a2\n");
+    if (param_size == NULL)
         return (ERR);
-    }
     for (int i = 0; param_size[i] != END_OF_TAB && i < 4; ++i) {
         instruction->params[i].types.direct = get_param(param_size[i],
             &arena[(*pos_in_arena + size + 2)]);
-        if (instruction->params[i].types.direct == ERR) {
-            printf("a3\n");
+        if (instruction->params[i].types.direct == ERR)
             return (ERR);
-        }
         size += param_size[i];
-        printf("size %d\n", size);
     }
     free(param_size);
     return (size);

@@ -11,72 +11,76 @@
 
 #include <stdlib.h>
 
-static int call_instruction(int address_offset, struct champion *champion,
-    uint8_t *arena, struct champion *champions)
+static void reset_instruction_if_error(int i, struct champion **champions)
 {
+    ++(*champions)[i].address;
+    free((*champions)[i].i);
+    (*champions)[i].i = NULL;
+}
+
+static int call_instruction(int address_offset, struct champion *champion,
+    uint8_t *arena, struct champion **champions)
+{
+    int tmp = champion->i->instruction;
+
     if (champion->actual_cycle <
         op_tab[(champion->i->instruction - 1)].nbr_cycles) {
         ++champion->actual_cycle;
         return (SUCC);
     }
-    printf("call i\n");
-    printf("%d\n", (champion->i->instruction - 1));
     TAB_FUN_INSTRUCTION[(champion->i->instruction - 1)].fun(champion, arena,
         champions);
+    if (tmp == 0x0c || tmp == 0x0f)
+        return (SUCC);
     champion->actual_cycle = 0;
-    printf("toto %d\n", address_offset);
-    printf("titi %d\n", champion->address);
     champion->address += address_offset + 2;
-    printf("address %d\n", champion->address);
+    champion->mov_in_mem += address_offset + 2;
     champion->address_offset = 0;
     free(champion->i);
     champion->i = NULL;
     return (SUCC);
 }
 
-static int call_champions_instruction(int i, struct champion *champions,
+static int call_champions_instruction(int i, struct champion **champions,
     uint8_t *arena)
 {
-    //printf("wtf\n");
-    if (champions[i].i == NULL) {
-        //printf("toto\n");
-        champions[i].i = malloc(sizeof(struct instruction) * 1);
-        if (champions[i].i == NULL)
+    if ((*champions)[i].i == NULL) {
+        (*champions)[i].i = malloc(sizeof(struct instruction) * 1);
+        if ((*champions)[i].i == NULL)
             return (ERR);
-        champions[i].i->instruction = arena[champions[i].address];
-        champions[i].address_offset =
-            get_param_instruction(&champions[i].address,
-            champions[i].i, arena);
-        if (champions[i].address_offset == ERR ||
-            champions[i].i->instruction == 0x00) {
-            ++champions[i].address;
-            free(champions[i].i);
-            champions[i].i = NULL;
+        (*champions)[i].i->instruction = arena[(*champions)[i].address];
+        if ((*champions)[i].i->instruction == 0x00 ||
+            (*champions)[i].i->instruction > 0x10) {
+            reset_instruction_if_error(i, champions);
+            return (SUCC);
         }
+        (*champions)[i].address_offset =
+            get_param_instruction(&(*champions)[i].address,
+            (*champions)[i].i, arena);
+        if ((*champions)[i].address_offset == ERR)
+            reset_instruction_if_error(i, champions);
     } else {
-        //printf("tototo\n");
-        call_instruction(champions[i].address_offset, &champions[i], arena,
-            champions);
+        call_instruction((*champions)[i].address_offset, &(*champions)[i],
+            arena, champions);
     }
     return (SUCC);
 }
 
-int handle_champion_action(struct champion *champions,
+int handle_champion_action(struct champion **champions,
     uint8_t *arena)
 {
     int i = 0;
     int nbr_dead = 0;
 
-    while (champions[i].carry != END_OF_TAB) {
-        if (champions[i].nbr_cycle_last_live == NBR_LIVE)
-            champions[i].is_dead = TRUE;
-        if (champions[i].is_dead == TRUE) {
-            printf("??3\n");
+    while ((*champions)[i].carry != END_OF_TAB) {
+        if ((*champions)[i].nbr_cycle_last_live == NBR_LIVE)
+            (*champions)[i].is_dead = TRUE;
+        if ((*champions)[i].is_dead == TRUE) {
             ++i;
             ++nbr_dead;
             continue;
         }
-        ++champions[i].nbr_cycle_last_live;
+        ++(*champions)[i].nbr_cycle_last_live;
         if (call_champions_instruction(i, champions, arena) == ERR)
             return (ERR);
         ++i;
@@ -84,22 +88,20 @@ int handle_champion_action(struct champion *champions,
     return (nbr_dead);
 }
 
-int do_game(struct champion *champions, uint8_t *arena)
+int do_game(struct champion **champions, uint8_t *arena)
 {
     int cycle = 0;
     int nbr_champions = 0;
     int return_val;
 
-    while (champions[nbr_champions].carry != END_OF_TAB)
+    while ((*champions)[nbr_champions].carry != END_OF_TAB)
         ++nbr_champions;
     while (cycle != CYCLE_TO_DIE) {
         return_val = handle_champion_action(champions, arena);
         if (return_val == ERR)
             return (ERR);
-        if (is_game_win_or_lose(nbr_champions, return_val, champions) == TRUE) {
-            printf("walibi\n");
+        if (is_game_win_or_lose(nbr_champions, return_val, champions) == TRUE)
             return (SUCC);
-        }
         ++cycle;
     }
     return (SUCC);

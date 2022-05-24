@@ -9,7 +9,7 @@
 #include "virtual_machine.h"
 
 int my_and(struct champion *c, uint8_t *arena,
-    UNUSED struct champion *fork_param)
+    UNUSED struct champion **fork_param)
 {
     int param1 = 0;
     int param2 = 0;
@@ -32,7 +32,7 @@ int my_and(struct champion *c, uint8_t *arena,
 }
 
 int my_or(struct champion *c, uint8_t *arena,
-    UNUSED struct champion *fork_param)
+    UNUSED struct champion **fork_param)
 {
     int param1 = 0;
     int param2 = 0;
@@ -55,7 +55,7 @@ int my_or(struct champion *c, uint8_t *arena,
 }
 
 int my_xor(struct champion *c, uint8_t *arena,
-    UNUSED struct champion *fork_param)
+    UNUSED struct champion **fork_param)
 {
     int param1 = 0;
     int param2 = 0;
@@ -78,7 +78,7 @@ int my_xor(struct champion *c, uint8_t *arena,
 }
 
 int zjmp(struct champion *c, UNUSED uint8_t *arena,
-    UNUSED struct champion *fork_param)
+    UNUSED struct champion **fork_param)
 {
     if (c->carry == 0)
         return (SUCC);
@@ -87,7 +87,7 @@ int zjmp(struct champion *c, UNUSED uint8_t *arena,
 }
 
 int ldi(struct champion *c, uint8_t *arena,
-    UNUSED struct champion *fork_param)
+    UNUSED struct champion **fork_param)
 {
     int s = get_n_byte_val(IND_SIZE, (c->address +
         c->i->params[0].types.indirect % IDX_MOD), arena) + 4;

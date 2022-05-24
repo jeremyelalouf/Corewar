@@ -30,6 +30,12 @@ static void init_info_champion(header_t *header, struct vm_i *vm_inf)
     vm_inf->champions[vm_inf->champions_nbr].i = NULL;
     my_strcpy(vm_inf->champions[vm_inf->champions_nbr].h.prog_name,
         header->prog_name);
+    vm_inf->champions[vm_inf->champions_nbr].h.prog_size = header->prog_size;
+    my_strcpy(vm_inf->champions[vm_inf->champions_nbr].h.comment,
+        header->comment);
+    vm_inf->champions[vm_inf->champions_nbr].h.magic = header->magic;
+    vm_inf->champions[vm_inf->champions_nbr].actual_cycle = 0;
+    vm_inf->champions[vm_inf->champions_nbr].mov_in_mem = 0;
 }
 
 int create_new_champion(header_t *header, struct vm_i *vm_inf,
@@ -68,10 +74,10 @@ int fill_arene_and_i(struct vm_i *vm_inf, uint8_t *arene, char *path_to_file,
         close(fd);
         return ERR;
     }
+    my_bswap(&header_tmp.prog_size, sizeof(int));
     if (create_new_champion(&header_tmp, vm_inf, tmp) == ERR)
         return ERR;
     address = vm_inf->champions[vm_inf->champions_nbr].address;
-    my_bswap(&header_tmp.prog_size, sizeof(int));
     read(fd, arene + address, header_tmp.prog_size);
     tmp->next_champion_address = address + header_tmp.prog_size + 1;
     ++vm_inf->champions_nbr;
@@ -116,7 +122,7 @@ int corewar(int ac, char *av[])
     my_memset(arene, 0, MEM_SIZE);
     if (handle_opt_and_fill_arene(&vm_inf, arene, av) == ERR)
         return ERR;
-    if (do_game(vm_inf.champions, arene) == ERR)
+    if (do_game(&vm_inf.champions, arene) == ERR)
         return ERR;
     return SUCC;
 }

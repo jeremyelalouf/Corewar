@@ -10,18 +10,19 @@
 #include "virtual_machine.h"
 
 int live(struct champion *c, UNUSED uint8_t *arena,
-    UNUSED struct champion *fork_param)
+    UNUSED struct champion **fork_param)
 {
     my_putstr("Le joueur ");
-    my_put_nbr(c->nb);
+    my_put_nbr(c->i->params[0].types.direct);
     my_putstr(" (");
     my_putstr(c->h.prog_name);
     my_putstr(") est en vie.\n");
-    c->nbr_cycle_last_live = 0;
+    if (c->i->params[0].types.direct == c->nb)
+        c->nbr_cycle_last_live = 0;
     return (SUCC);
 }
 
-int ld(struct champion *c, uint8_t *arena, UNUSED struct champion *fork_param)
+int ld(struct champion *c, uint8_t *arena, UNUSED struct champion **fork_param)
 {
     c->registers[(c->i->params[1].types.reg - 1)] =
         get_n_byte_val(REG_SIZE, (c->address + c->i->params[0].types.direct %
@@ -32,7 +33,7 @@ int ld(struct champion *c, uint8_t *arena, UNUSED struct champion *fork_param)
 }
 
 int my_st(struct champion *c, uint8_t *arena,
-    UNUSED struct champion *fork_param)
+    UNUSED struct champion **fork_param)
 {
     int real_address;
 
@@ -57,7 +58,7 @@ int my_st(struct champion *c, uint8_t *arena,
 }
 
 int add(struct champion *c, UNUSED uint8_t *arena,
-    UNUSED struct champion *fork_param)
+    UNUSED struct champion **fork_param)
 {
     c->registers[(c->i->params[2].types.reg - 1)] =
         c->registers[(c->i->params[1].types.reg - 1)] +
@@ -67,7 +68,7 @@ int add(struct champion *c, UNUSED uint8_t *arena,
 }
 
 int sub(struct champion *c, UNUSED uint8_t *arena,
-    UNUSED struct champion *fork_param)
+    UNUSED struct champion **fork_param)
 {
     c->registers[(c->i->params[2].types.reg - 1)] =
         c->registers[(c->i->params[1].types.reg - 1)] -

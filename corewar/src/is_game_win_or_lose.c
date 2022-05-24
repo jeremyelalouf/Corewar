@@ -9,20 +9,17 @@
 #include "corewar.h"
 
 int is_game_win_or_lose(int nbr_champions, int nbr_dead_champions,
-    struct champion *champions)
+    struct champion **champions)
 {
-    printf("%d; %d\n", nbr_champions, nbr_dead_champions);
-    if (nbr_dead_champions == nbr_champions) {
-        printf("pangolin\n");
+    if (nbr_dead_champions == nbr_champions)
         return (TRUE);
-    }
     if (nbr_dead_champions + 1 == nbr_champions) {
-        while ((*champions).is_dead != FALSE)
+        while ((*champions)->is_dead != FALSE)
             ++champions;
         my_putstr("The player ");
-        my_put_nbr(champions->nb);
+        my_put_nbr((*champions)->nb);
         my_putstr("(");
-        my_putstr(champions->h.prog_name);
+        my_putstr((*champions)->h.prog_name);
         my_putstr(") has won.\n");
         return (TRUE);
     }
