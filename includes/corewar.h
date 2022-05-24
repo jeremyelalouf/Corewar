@@ -49,6 +49,7 @@ struct champion {
     header_t h;
     int nb;
     int address;
+    int address_offset;
 };
 
 struct vm_i {

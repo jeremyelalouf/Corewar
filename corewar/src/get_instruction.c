@@ -38,6 +38,7 @@ static int is_instruction_reg_or_index(int k, uint8_t type_param,
            *param_size = IND_SIZE;
         else
             *param_size = REG_BYTE_SIZE;
+        printf("%d\n", *param_size);
         return (TRUE);
     } else {
         return (FALSE);
@@ -52,14 +53,15 @@ static int *get_read_size(uint8_t instruction, uint8_t coding_byte)
 
     if (param_size == NULL)
         return NULL;
-    while (i < op_tab[instruction - 1].nbr_args) {
-        type_param = ((coding_byte << 2 * i & 0xff) >> 6);
+    while (i < op_tab[(instruction - 1)].nbr_args) {
+        type_param = ((coding_byte << (2 * i) & 0xff) >> 6);
         if (is_instruction_reg_or_index((int)(instruction - 1), type_param,
             &param_size[i])) {
             ++i;
             continue;
         }
         param_size[i] = get_size_type(type_param);
+        printf("%d\n", param_size[i]);
         ++i;
     }
     if (i != 4)
@@ -73,7 +75,7 @@ static int get_param_from_coding_byte(int *pos_in_arena,
     int size = 0;
     int *param_size;
 
-    instruction->coding_byte = arena[*pos_in_arena + 1];
+    instruction->coding_byte = arena[(*pos_in_arena + 1)];
     if (verify_coding_byte(instruction) == ERR) {
         printf("a1\n");
         return (ERR);
@@ -84,14 +86,15 @@ static int get_param_from_coding_byte(int *pos_in_arena,
         printf("a2\n");
         return (ERR);
     }
-    for (int i = 0; i < 4 && param_size[i] != END_OF_TAB; ++i) {
+    for (int i = 0; param_size[i] != END_OF_TAB && i < 4; ++i) {
         instruction->params[i].types.direct = get_param(param_size[i],
-            &arena[*pos_in_arena + size + 2]);
+            &arena[(*pos_in_arena + size + 2)]);
         if (instruction->params[i].types.direct == ERR) {
             printf("a3\n");
             return (ERR);
         }
         size += param_size[i];
+        printf("size %d\n", size);
     }
     free(param_size);
     return (size);
@@ -104,13 +107,13 @@ int get_param_instruction(int *i, struct instruction *instruction,
 
     if (instruction->instruction == 0x01) {
         instruction->params[0].types.direct = get_param(DIR_SIZE,
-            &arena[++(*i)]);
-        r_val += 2;
+            &arena[(*i + 1)]);
+        r_val += 3;
     } else if (instruction->instruction == 0x09 ||
         instruction->instruction == 0x0c ||
         instruction->instruction == 0x0f) {
         instruction->params[0].types.indirect = get_param(IND_SIZE,
-            &arena[++(*i)]);
+            &arena[(*i + 1)]);
         r_val += 1;
     } else {
         r_val = get_param_from_coding_byte(i, instruction, arena);

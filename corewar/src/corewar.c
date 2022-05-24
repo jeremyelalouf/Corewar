@@ -19,7 +19,7 @@
 struct champion *get_all_champions(int ac, const char *av[],
     int *dump, int *nb_champions);
 
-static void init_info_champion(struct vm_i *vm_inf)
+static void init_info_champion(header_t *header, struct vm_i *vm_inf)
 {
     for (int i = 0; i < REG_NUMBER; ++i) {
         vm_inf->champions[vm_inf->champions_nbr].registers[i] = 0;
@@ -28,9 +28,12 @@ static void init_info_champion(struct vm_i *vm_inf)
     vm_inf->champions[vm_inf->champions_nbr].nbr_cycle_last_live = 0;
     vm_inf->champions[vm_inf->champions_nbr].carry = 0;
     vm_inf->champions[vm_inf->champions_nbr].i = NULL;
+    my_strcpy(vm_inf->champions[vm_inf->champions_nbr].h.prog_name,
+        header->prog_name);
 }
 
-int create_new_champion(struct vm_i *vm_inf, struct opt_value *tmp)
+int create_new_champion(header_t *header, struct vm_i *vm_inf,
+    struct opt_value *tmp)
 {
     vm_inf->champions = realloc(vm_inf->champions, sizeof(struct champion) *
         (vm_inf->champions_nbr + 1));
@@ -47,7 +50,7 @@ int create_new_champion(struct vm_i *vm_inf, struct opt_value *tmp)
     else
         vm_inf->champions[vm_inf->champions_nbr].nb =
             vm_inf->champions_nbr + 1;
-    init_info_champion(vm_inf);
+    init_info_champion(header, vm_inf);
     return SUCC;
 }
 
@@ -65,7 +68,7 @@ int fill_arene_and_i(struct vm_i *vm_inf, uint8_t *arene, char *path_to_file,
         close(fd);
         return ERR;
     }
-    if (create_new_champion(vm_inf, tmp) == ERR)
+    if (create_new_champion(&header_tmp, vm_inf, tmp) == ERR)
         return ERR;
     address = vm_inf->champions[vm_inf->champions_nbr].address;
     my_bswap(&header_tmp.prog_size, sizeof(int));

@@ -15,8 +15,9 @@ int live(struct champion *c, UNUSED uint8_t *arena,
     my_putstr("Le joueur ");
     my_put_nbr(c->nb);
     my_putstr(" (");
-    //my_putstr(c->h.prog_name);
+    my_putstr(c->h.prog_name);
     my_putstr(") est en vie.\n");
+    c->nbr_cycle_last_live = 0;
     return (SUCC);
 }
 

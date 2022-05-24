@@ -15,15 +15,20 @@ static int call_instruction(int address_offset, struct champion *champion,
     uint8_t *arena, struct champion *champions)
 {
     if (champion->actual_cycle <
-        op_tab[champion->i->instruction - 1].nbr_cycles) {
+        op_tab[(champion->i->instruction - 1)].nbr_cycles) {
         ++champion->actual_cycle;
         return (SUCC);
     }
     printf("call i\n");
-    TAB_FUN_INSTRUCTION[champion->i->instruction - 1].fun(champion, arena,
+    printf("%d\n", (champion->i->instruction - 1));
+    TAB_FUN_INSTRUCTION[(champion->i->instruction - 1)].fun(champion, arena,
         champions);
     champion->actual_cycle = 0;
+    printf("toto %d\n", address_offset);
+    printf("titi %d\n", champion->address);
     champion->address += address_offset + 2;
+    printf("address %d\n", champion->address);
+    champion->address_offset = 0;
     free(champion->i);
     champion->i = NULL;
     return (SUCC);
@@ -32,8 +37,6 @@ static int call_instruction(int address_offset, struct champion *champion,
 static int call_champions_instruction(int i, struct champion *champions,
     uint8_t *arena)
 {
-    int address_offset = 0;
-
     //printf("wtf\n");
     if (champions[i].i == NULL) {
         //printf("toto\n");
@@ -41,15 +44,19 @@ static int call_champions_instruction(int i, struct champion *champions,
         if (champions[i].i == NULL)
             return (ERR);
         champions[i].i->instruction = arena[champions[i].address];
-        address_offset = get_param_instruction(&champions[i].address,
+        champions[i].address_offset =
+            get_param_instruction(&champions[i].address,
             champions[i].i, arena);
-        if (address_offset == ERR) {
-            printf("uhmu\n");
-            return (ERR);
+        if (champions[i].address_offset == ERR ||
+            champions[i].i->instruction == 0x00) {
+            ++champions[i].address;
+            free(champions[i].i);
+            champions[i].i = NULL;
         }
     } else {
         //printf("tototo\n");
-        call_instruction(address_offset, &champions[i], arena, champions);
+        call_instruction(champions[i].address_offset, &champions[i], arena,
+            champions);
     }
     return (SUCC);
 }
