@@ -44,9 +44,9 @@ static int is_parameter_valid(int param_nb, int instruction,
 {
     if (*value_param == 0x00)
         return (FALSE);
-    if ((op_tab[instruction - 1].type[param_nb] & *value_param) !=
-        (*value_param & 0x07))
-        return (FALSE);
+    // if ((op_tab[instruction - 1].type[param_nb] & *value_param) !=
+    //     (*value_param & 0x07))
+    //     return (FALSE);
     if (*value_param == T_IND)
         *value_param = VAL_IND;
     return (TRUE);

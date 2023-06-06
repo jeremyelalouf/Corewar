@@ -29,9 +29,10 @@ static int call_check_function(
     for (int i = 0; i != sizeof(INSTRUCTION_TAB) / sizeof(*INSTRUCTION_TAB);
         ++i) {
         if (my_strcmp(array[array_offset - 1], INSTRUCTION_TAB[i].instruction)
-            == 0)
+            == 0) {
             return INSTRUCTION_TAB[i].function(instruction,
                 array + array_offset, compile_filed_fd);
+            }
     }
     return ERR;
 }
